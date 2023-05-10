@@ -1,0 +1,7 @@
+
+State Machine - |PongGameVHDL|ps2_keyboard_to_ascii:teclado|state
+Name state.output state.translate state.new_code state.ready 
+state.ready 0 0 0 0 
+state.new_code 0 0 1 1 
+state.translate 0 1 0 1 
+state.output 1 0 0 1 

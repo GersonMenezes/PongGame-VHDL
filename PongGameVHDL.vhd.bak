@@ -1,0 +1,634 @@
+-- Como fazer a forma dos personagem com tiro
+-- Observar que tem reset e reseta
+-- 
+
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.std_logic_arith.all;
+use IEEE.std_logic_unsigned.all;
+use work.tipos.all;
+
+entity PongGameVHDL is
+port (
+	reset : in std_logic;
+	clk: in std_logic; --135 MHz
+	clk_27: in std_logic;
+
+	VGA_CLK, -- Dot clock to DAC
+	VGA_HS, -- Active-Low Horizontal Sync
+	VGA_VS, -- Active-Low Vertical Sync
+	VGA_BLANK, -- Active-Low DAC blanking control
+	VGA_SYNC : out std_logic; -- Active-Low DAC Sync on Green
+	VGA_R, VGA_G, VGA_B : out std_logic_vector(9 downto 0);
+	ps2_clk    : IN  STD_LOGIC;                     --clock signal from PS2 keyboard
+	ps2_data   : IN  STD_LOGIC;                     --data signal from PS2 keyboard
+	ascii_new  : OUT STD_LOGIC;                     --output flag indicating new ASCII value
+	ascii_code : OUT STD_LOGIC_VECTOR(6 DOWNTO 0) --ASCII value
+);
+end PongGameVHDL;
+
+architecture rtl of PongGameVHDL is
+type ArrayInteger1280 is array (39 downto 0) of integer range 1 to 1280;
+type ArrayInteger1024 is array (39 downto 0) of integer range 1 to 1024;
+
+-------------------------
+-- Parametros de video --
+-------------------------
+--original do barth
+constant HTOTAL 			: integer := 1688;	
+constant HSYNC 			: integer := 112;	
+constant HBACK_PORCH		: integer := 248;	
+constant HACTIVE 			: integer := 1280;	
+constant HFRONT_PORCH 	: integer := 48;	
+constant HEND 				: integer := 1280;	
+
+constant VTOTAL 			: integer := 1066;	
+constant VSYNC 			: integer := 3;		
+constant VBACK_PORCH		: integer := 38;	
+constant VACTIVE			: integer := 1024;	
+constant VFRONT_PORCH 	: integer := 1;		
+constant VEND 				: integer := 1024;	
+
+------------------------
+-- Parametros do tiro --
+------------------------
+	signal Tiro_HSTART 	: integer range 1 to 1280 := 1;
+	signal Tiro_HEND 		: integer range 1 to 1280 := 1;
+	signal Tiro_VSTART	: integer range 1 to 1024 := 1;
+	signal Tiro_VEND		: integer range 1 to 1024 := 1;
+	signal Tiro_Visivel, Tiro01: std_LOGIC := '0';
+	
+	------------------------
+-- Parametros Gerais do Jogo --
+------------------------
+	signal points_player1, points_player2 	: integer range 0 to 80 := 0;
+	signal game_level 	: integer range 1 to 10 := 1;
+	signal veloci_bola   : integer range 1 to 10 := 1; 
+	
+------------------------
+-- Parametros do bola --
+------------------------
+	signal bola_HSTART 	: integer range 1 to 1280 := 1;
+	signal bola_HEND 		: integer range 1 to 1280 := 11;
+	signal bola_VSTART	: integer range 1 to 1024 := 500;
+	signal bola_VEND		: integer range 1 to 1024 := 510;
+	signal bola_direction, bola_out: std_LOGIC := '0';
+	
+------------------------
+-- Parametros do barra1 --
+------------------------
+	signal barra1_HSTART 	: integer range 1 to 1280 := 1;
+	signal barra1_HEND 		: integer range 1 to 1280 := 11;
+	signal barra1_VSTART	   : integer range 1 to 1024 := 500;
+	signal barra1_VEND		: integer range 1 to 1024 := 600;
+	signal barra1_direction: std_LOGIC := '0';
+	signal barra1_out: std_LOGIC := '1';
+	
+	------------------------
+-- Parametros do barra2 --
+------------------------
+	signal barra2_HSTART 	: integer range 1 to 1280 := 1270;
+	signal barra2_HEND 		: integer range 1 to 1280 := 1280;
+	signal barra2_VSTART	   : integer range 1 to 1024 := 500;
+	signal barra2_VEND		: integer range 1 to 1024 := 600;
+	signal barra2_direction: std_LOGIC := '0';
+	signal barra2_out: std_LOGIC := '1';
+	
+---------------------------
+-- Parametros do personagem
+---------------------------
+	signal Personagem_HSTART	: integer range 1 to 1280 := 590;
+	signal Personagem_HEND		: integer range 1 to 1280 := 690;
+	signal Personagem_VSTART 	: integer range 1 to 1024 := 940;
+	signal Personagem_VEND 		: integer range 1 to 1024 := 975;
+	signal Personagem_HCentro	: integer range 1 to 1280 := 640;
+	signal Personagem_VCentro	: integer range 1 to 1024 := 960;
+-----------------------
+-- Parametros do HUD -- Barra de progresso?
+-----------------------
+	signal HUD_HSTART		: integer range 1 to 1280 := 1;--1;
+	signal HUD_HEND		: integer range 1 to 1280 := 1280;--1280;
+	signal HUD_VSTART 	: integer range 1 to 1024 := 1;--1;
+	signal HUD_VEND 		: integer range 1 to 1024 := 70;--70;
+	
+--------------
+-- inimigo ---
+--------------
+	signal inimigo_HSTART: ArrayInteger1280:=(others =>1);
+	signal inimigo_HEND: ArrayInteger1280:=(others =>1);
+	signal inimigo_VSTART: ArrayInteger1024:=(others =>1);
+	signal inimigo_VEND: ArrayInteger1024:=(others =>1);
+	signal inimigo_HCentro: ArrayInteger1280:=(others =>1);
+	signal inimigo_VCentro: ArrayInteger1024:=(others =>1);
+--SINAIS PRA POSIÇÃO INICIAL DOS inimigo	
+	signal inimigoInicial_HSTART: ArrayInteger1280:=(others =>1);
+	signal inimigoInicial_HEND: ArrayInteger1280:=(others =>1);
+	signal inimigoInicial_VSTART: ArrayInteger1024:=(others =>1);
+	signal inimigoInicial_VEND: ArrayInteger1024:=(others =>1);
+	signal inimigoInicial_HCentro: ArrayInteger1280:=(others =>1);
+	signal inimigoInicial_VCentro: ArrayInteger1024:=(others =>1);
+--flags inimigo visivel e naquele pixel
+	signal inimigo: std_logic_vector(39 downto 0):=(others => '0');
+	signal inimigo_visivel: std_logic_vector(39 downto 0):=(others => '0');
+	signal inimigos: std_logic;
+--------------------------------------------------------
+--pontos, comeea em 8 e acaba em uma diferenca de 8(0 ou 16) 
+	signal points: integer range 0 to 39 := 0; 					
+--clock de movimento(quadrado e retangulo), aumenta a cada ponto.
+	signal movclk,countclk,clk_inimigo: STD_LOGIC;
+--define a cor do campo, de acordo com a pontuacao.
+	signal fcolor: STD_LOGIC_VECTOR(1 downto 0);
+-- Horizontal position (0-1667)
+	signal HCount : integer range 0 to 1688 := 0;
+-- Vertical position (0-1065)
+	signal VCount : integer range 0 to 1066 := 0;
+--Flags final de tela
+	signal EndOfLine, EndOfField 		: std_logic;
+--Flags objetos devem aparecer
+	signal Campo: std_logic;
+	signal Personagem: std_logic;
+--Flags de sincronizacao do VGA
+	signal vga_hblank, vga_hsync, vga_vblank, vga_vsync : std_logic;
+--Variaveis do teclado
+	signal temp_ps2_code_new : STD_LOGIC;
+	signal temp_ps2_code     : STD_LOGIC_VECTOR(6 DOWNTO 0); 
+--
+	signal reseta: std_logic := '1';
+	signal HPixel, VPixel: integer range 0 to 1280:=0;
+--
+	signal movimento: std_logic := '0';
+	signal contador: integer range 0 to 39 := 0;
+	
+--Componentes
+	component Divisor_frequencia
+		 port (
+				 CLK: in STD_LOGIC;
+				 COUT: out STD_LOGIC;
+				 clk_inimigo: out STD_LOGIC
+			 );
+	end component; 
+
+	component altclk
+		PORT (
+			inclk0		: IN STD_LOGIC  := '0';
+			c0		: OUT STD_LOGIC 
+		);
+	END component;
+
+	component ps2_keyboard_to_ascii
+	  GENERIC(
+			clk_freq                  : INTEGER := 50_000_000; --system clock frequency in Hz
+			ps2_debounce_counter_size : INTEGER := 8);         --set such that 2^size/clk_freq = 5us (size = 8 for 50MHz)
+	  PORT(
+			clk        : IN  STD_LOGIC;                     --system clock input
+			ps2_clk    : IN  STD_LOGIC;                     --clock signal from PS2 keyboard
+			ps2_data   : IN  STD_LOGIC;                     --data signal from PS2 keyboard
+			ascii_new  : OUT STD_LOGIC;                     --output flag indicating new ASCII value
+			ascii_code : OUT STD_LOGIC_VECTOR(6 DOWNTO 0)); --ASCII value
+	END component;
+	
+	component formgen
+		port(
+			clk,reset: in STD_LOGIC;
+			HPixel, VPixel: in integer range 0 to 1280;
+			FORM_HSTART	: in integer range 1 to 1280;
+			FORM_HEND	: in integer range 1 to 1280;
+			FORM_VSTART : in integer range 1 to 1024;
+			FORM_VEND	: in integer range 1 to 1024;
+			form: out STD_LOGIC
+		);
+	 end component;
+	 
+	 component formBarra1
+		port(
+			clk,reset: in STD_LOGIC;
+			HPixel, VPixel: in integer range 0 to 1280;
+			FORM_HSTART	: in integer range 1 to 1280;
+			FORM_HEND	: in integer range 1 to 1280;
+			FORM_VSTART : in integer range 1 to 1024;
+			FORM_VEND	: in integer range 1 to 1024;
+			form: out STD_LOGIC
+		);
+	 end component;
+ 	
+	component form_personagem
+		port(
+			clk,reset: in STD_LOGIC;
+			HPixel, VPixel: in integer range 0 to 1280;
+			HCentro, VCentro: in integer range 1 to 1280;
+			form: out STD_LOGIC
+		);
+	 end component;
+	 
+	 component form_inimigo0
+		port(
+			clk,reset: in STD_LOGIC;
+			HPixel, VPixel: in integer range 0 to 1280;
+			HCentro, VCentro: in integer range 1 to 1280;
+			form: out STD_LOGIC
+		);
+	 end component;
+	 
+	component hud
+		port(
+			clk,reset: in STD_LOGIC;
+			HPixel, VPixel: in integer range 0 to 1280;
+			FORM_HSTART	: in integer range 1 to 1280;
+			FORM_HEND	: in integer range 1 to 1280;
+			FORM_VSTART : in integer range 1 to 1024;
+			FORM_VEND	: in integer range 1 to 1024;
+			form: out STD_LOGIC;
+			color: out STD_LOGIC_VECTOR(1 downto 0);
+			points: in integer range 0 to 16
+		);
+	 end component;
+	 
+	 component inimigosInicial
+		port(
+			inimigoInicial_HCentro: out ArrayInteger1280;
+			inimigoInicial_VCentro: out ArrayInteger1024
+		);
+	end component;
+---------------------------------
+
+begin
+CLKM_MAKING: divisor_frequencia port map(countclk,movclk,clk_inimigo);
+
+CLKM_M: altclk port map(clk_27,countclk);
+
+teclado : ps2_keyboard_to_ascii port map(clk,ps2_clk,ps2_data,temp_ps2_code_new,temp_ps2_code);
+
+--Field	: hud	port map(countclk,reset,Hpixel,VPixel,HUD_hstart,HUD_hend,HUD_vstart,HUD_vend,Campo,Fcolor,points);	-- Barra de progresso?
+
+--Personagemm: form_personagem port map(countclk,reset,HPixel,VPixel,Personagem_Hcentro,Personagem_Vcentro,Personagem);
+
+-- Tiro1: formgen port map(countclk, reset, HPixel, VPixel, Tiro_hstart, Tiro_hend, Tiro_vstart, Tiro_vend,Tiro01);
+
+barra_1: formBarra1 port map(countclk, reset, HPixel, VPixel, barra1_hstart, barra1_hend, barra1_vstart, barra1_vend, barra1_out);
+
+barra_2: formBarra1 port map(countclk, reset, HPixel, VPixel, barra2_hstart, barra2_hend, barra2_vstart, barra2_vend, barra2_out);
+
+bola: formBarra1 port map(countclk, reset, HPixel, VPixel, bola_hstart, bola_hend, bola_vstart, bola_vend, bola_out);
+
+--PosicaoInimigo: inimigosInicial port map(inimigoInicial_HCentro,inimigoInicial_VCentro);
+
+gera_inimigo0: 
+   for i in 0 to 19 generate -- 1 por 1
+	inimigo1: form_inimigo0 
+		port map(countclk,reset,HPixel,VPixel,inimigo_HCentro(i),inimigo_VCentro(i),inimigo(i));
+   end generate gera_inimigo0;
+	
+gera_inimigo1: 
+   for i in 20 to 39 generate -- 1 por 1
+	inimigo1: formgen 
+		port map(countclk,reset,HPixel,VPixel,inimigo_HSTART(i),inimigo_HEND(i),inimigo_VSTART(i),inimigo_VEND(i),inimigo(i));
+   end generate gera_inimigo1;
+
+
+HCounter: process (countclk, reset) -- Qual pix será modificado na tela?
+begin
+	if reset = '1' then
+		Hcount <= 0;
+		VCount <= 0;
+		vga_hsync <= '1';
+		vga_vsync <= '1';
+	elsif countclk'event and countclk = '1' then
+		if Hcount < HTOTAL-1 then
+			Hcount <= Hcount+1;
+		ELSE
+			Hcount <= 0;
+			if VCount < Vtotal-1 then
+				VCount <= VCount+1;
+			else
+				VCount <= 0;
+			end if;
+		end if;
+		
+		if (Hcount >= HSYNC + HBACK_PORCH) then
+			Hpixel <= Hpixel + 1;
+		else
+			Hpixel <= 0;
+		end if;
+		
+		if (VCount >= VSYNC + VBACK_PORCH) then
+			VPixel <= VCount - (VSYNC+VBACK_PORCH);
+		else
+			Vpixel <= 0;
+		end if;
+		
+		if Hcount = HTOTAL - 1 then
+			vga_hsync <= '1';
+		elsif Hcount = HSYNC - 1 then
+			vga_hsync <= '0';
+		end if;
+		
+		if VCount = VTOTAL - 1 then
+			vga_vsync <= '1';
+		elsif VCount = VSYNC - 1 then
+			vga_vsync <= '0';
+		end if;
+	end if;
+end process;
+
+
+--movimenta_inimigo: process(clk_inimigo)
+--begin
+--	if reset='1' then
+--		contador<=0;
+--		reseta<='1';
+--		movimento<='0';
+--	else
+--		if (clk_inimigo'event and clk_inimigo='1') then
+--			for i in 0 to 39 loop 									-- 0 to 19?
+--					inimigo_HSTART(i) <= inimigo_HCentro(i)-24;
+--					inimigo_HEND(i) <= inimigo_HCentro(i)+24;
+--					inimigo_VSTART(i) <= inimigo_VCentro(i)-16;
+--					inimigo_VEND(i)<= inimigo_VCentro(i)+16;
+--			end loop;
+--			if reseta='1' then
+--				inimigo_HCentro <= inimigoInicial_HCentro;
+--				inimigo_VCentro <= inimigoInicial_VCentro;
+--				reseta<='0';
+--				movimento<='0';
+--			else
+--				contador<=contador+1;
+--				--movimenta os inimigo
+--				if (movimento='0') then
+--					for i in 0 to 39 loop
+--						if contador=i then
+--							inimigo_HCentro(i) <= inimigo_HCentro(i)-20;
+--						end if;
+--					end loop;
+--					if contador=39 then
+--						contador<=0;
+--						if inimigo_HCentro(0)<50+35 then
+--							movimento <= '1';
+--						end if;
+--					end if;
+--				elsif (movimento='1') then
+--					for i in 0 to 39 loop
+--						if contador=i then
+--							inimigo_HCentro(i)<=inimigo_HCentro(i)+20;
+--						end if;
+--					end loop;
+--					if contador=39 then
+--						contador<=0;
+--						if inimigo_HCentro(39)>1230-35 then
+--							movimento<='0';
+--						end if;
+--					end if;
+--				end if;
+--			end if;
+--		end if;
+--	end if;
+--end process;
+
+movimenta_barra1: process(clk_inimigo)
+begin
+	if reset='1' then
+		barra1_HSTART <= 1;
+		barra1_HEND <= 11;
+		barra1_VSTART <= 500;
+		barra1_VEND <= 600;
+	else
+		if (clk_inimigo'event and clk_inimigo='1') then
+			-- MOVIMENTA a barra 1
+			if((temp_ps2_code_new = '1' and temp_ps2_code= "1110011") and (barra1_VEND < 1024)) then -- s
+				barra1_VEND <= barra1_VEND+2;
+  				barra1_VSTART <= barra1_VSTART+2;
+			elsif((temp_ps2_code_new = '1' and temp_ps2_code= "1110111") and (barra1_VSTART > 70)) then -- w
+				barra1_VEND <= barra1_VEND-2;
+  				barra1_VSTART <= barra1_VSTART-2;
+			end if;
+		end if;
+	end if;
+end process;
+
+movimenta_barra2: process(clk_inimigo)
+begin
+	if reset='1' then
+		barra2_HSTART <= 1270;
+		barra2_HEND <= 1280;
+		barra2_VSTART <= 500;
+		barra2_VEND <= 600;
+	else
+		if (clk_inimigo'event and clk_inimigo='1') then
+			--Movimenta a barra 2
+			if((temp_ps2_code_new = '1' and temp_ps2_code= "1101111") and (barra2_VEND < 1024)) then -- o
+				barra2_VEND <= barra2_VEND+2;
+  				barra2_VSTART <= barra2_VSTART+2;
+			elsif((temp_ps2_code_new = '1' and temp_ps2_code= "1101101") and (barra2_VSTART > 70)) then -- l
+				barra2_VEND <= barra2_VEND-2;
+  				barra2_VSTART <= barra2_VSTART-2;
+			end if;
+		end if;
+	end if;
+end process;
+
+movimenta_bola: process(clk_inimigo)
+begin
+	if reset='1' then
+		bola_HSTART <= 1;
+		bola_HEND <= 11;
+		bola_VSTART <= 500;
+		bola_VEND <= 510;
+	else
+		if (clk_inimigo'event and clk_inimigo='1') then
+			--Movimenta a barra2
+			--se atingir a parte de cima, desce e vice-versa
+			if (bola_direction = '0') then
+				bola_HSTART <= bola_HSTART+1;
+				bola_HEND <= bola_HEND+1;
+				if(bola_HEND = 1270) then
+					bola_direction <= '1';
+				end if;
+			elsif (bola_direction = '1') then
+				bola_HSTART <= bola_HSTART-1;
+				bola_HEND <= bola_HEND-1;
+				if(bola_HSTART = 10) then
+					bola_direction <= '0';
+				end if;
+			end if;
+		end if;
+	end if;
+end process;
+
+--personagem_action: process(movclk,reset)
+--variable bhend,bhstart: integer range 0 to 1280;
+--variable bvend,bvstart: integer range 0 to 1024;
+--begin
+--	if(reset='1') then
+--		points <= 0;--reseta pontos
+--	else
+--		if(movclk'EVENT and movclk = '0') then
+----			--resetar:
+--				if reseta='1' then
+--					Inimigo_visivel <= (others=>'1');
+--				end if;
+--					
+--			--MOVIMENTA O PERSONAGEM
+--				if((temp_ps2_code_new = '1' and temp_ps2_code= "1100100") and Personagem_Hcentro < (HEND-150)) then
+--					Personagem_HCentro<=Personagem_HCentro+1;
+--				elsif((temp_ps2_code_new = '1' and temp_ps2_code= "1100001") and Personagem_Hcentro > 150) then
+--					Personagem_HCentro <= Personagem_HCentro-1;
+--				end if;
+--		
+--			--Cria um tiro
+--				if(temp_ps2_code_new = '1' and temp_ps2_code = "0100000") then
+--					if Tiro_Visivel = '0' then
+--						Tiro_Visivel <= '1';
+--						Tiro_VSTART <= Personagem_Vcentro-15;
+--						Tiro_VEND <= Personagem_Vcentro;
+--						Tiro_HSTART <= Personagem_HCentro-2;
+--						Tiro_HEND <= Personagem_HCentro+2;
+--					end if;
+--				end if;
+--				
+--			for i in 0 to 39 loop
+--				--Testa se o tiro acertou um inimigo
+--				if(Inimigo_visivel(i) = '1' and Tiro_Visivel='1') then
+--					if (inimigo_VSTART(i) < tiro_VEND and	Tiro_VSTART<inimigo_VEND(i) and inimigo_HSTART(i) < Tiro_HEND and Tiro_HSTART<inimigo_HEND(i)) then
+--						Tiro_Visivel <= '0';
+--						Inimigo_visivel(i) <= '0';
+--						
+--						if (points < 40) then
+--							points <= points+1;
+--						else
+--							points <= 0;
+--						end if;
+--					end if;
+--				end if;
+--			end loop;
+--			
+--			--Movimenta o tiro pra cima
+--			if (Tiro_Visivel = '1') then
+--				Tiro_VSTART <= Tiro_VSTART-1;
+--				Tiro_VEND <= Tiro_VEND-1;
+--				--se atingir a parte de cima, some o tiro
+--				if (Tiro_VSTART < 70) then
+--					Tiro_Visivel <= '0';
+--				end if;
+--			end if;
+--		end if;
+--	end if;
+--end process;
+
+VerInimigo: process (countclk, reset)
+begin
+	if reset='1' then
+	
+	elsif (countclk'event and countclk='1') then	-- Verifica se ainda tem inimigo vivo?
+		if (	(inimigo(0)='1' and Inimigo_visivel(0)='1') or
+				(inimigo(1)='1' and Inimigo_visivel(1)='1') or
+				(inimigo(2)='1' and Inimigo_visivel(2)='1') or
+				(inimigo(3)='1' and Inimigo_visivel(3)='1') or
+				(inimigo(4)='1' and Inimigo_visivel(4)='1') or
+				(inimigo(5)='1' and Inimigo_visivel(5)='1') or
+				(inimigo(6)='1' and Inimigo_visivel(6)='1') or
+				(inimigo(7)='1' and Inimigo_visivel(7)='1') or
+				(inimigo(8)='1' and Inimigo_visivel(8)='1') or
+				(inimigo(9)='1' and Inimigo_visivel(9)='1') or
+				
+				(inimigo(10)='1' and Inimigo_visivel(10)='1') or
+				(inimigo(11)='1' and Inimigo_visivel(11)='1') or
+				(inimigo(12)='1' and Inimigo_visivel(12)='1') or
+				(inimigo(13)='1' and Inimigo_visivel(13)='1') or
+				(inimigo(14)='1' and Inimigo_visivel(14)='1') or
+				(inimigo(15)='1' and Inimigo_visivel(15)='1') or
+				(inimigo(16)='1' and Inimigo_visivel(16)='1') or
+				(inimigo(17)='1' and Inimigo_visivel(17)='1') or
+				(inimigo(18)='1' and Inimigo_visivel(18)='1') or
+				(inimigo(19)='1' and Inimigo_visivel(19)='1') or
+				
+				(inimigo(20)='1' and Inimigo_visivel(20)='1') or
+				(inimigo(21)='1' and Inimigo_visivel(21)='1') or
+				(inimigo(22)='1' and Inimigo_visivel(22)='1') or
+				(inimigo(23)='1' and Inimigo_visivel(23)='1') or
+				(inimigo(24)='1' and Inimigo_visivel(24)='1') or
+				(inimigo(25)='1' and Inimigo_visivel(25)='1') or
+				(inimigo(26)='1' and Inimigo_visivel(26)='1') or
+				(inimigo(27)='1' and Inimigo_visivel(27)='1') or
+				(inimigo(28)='1' and Inimigo_visivel(28)='1') or
+				(inimigo(29)='1' and Inimigo_visivel(29)='1') or
+				
+				(inimigo(30)='1' and Inimigo_visivel(30)='1') or
+				(inimigo(31)='1' and Inimigo_visivel(31)='1') or
+				(inimigo(32)='1' and Inimigo_visivel(32)='1') or
+				(inimigo(33)='1' and Inimigo_visivel(33)='1') or
+				(inimigo(34)='1' and Inimigo_visivel(34)='1') or
+				(inimigo(35)='1' and Inimigo_visivel(35)='1') or
+				(inimigo(36)='1' and Inimigo_visivel(36)='1') or
+				(inimigo(37)='1' and Inimigo_visivel(37)='1') or
+				(inimigo(38)='1' and Inimigo_visivel(38)='1') or
+				(inimigo(39)='1' and Inimigo_visivel(39)='1') ) then
+			inimigos<='1';
+		else
+			inimigos<='0';
+		end if;
+	end if;
+end process;
+
+---------------------------------------------------------------------------------------
+VideoOut: process (countclk, reset) -- Here????? elsif não faz sentido
+begin
+	if reset = '1' then
+		VGA_R <= "1111111111";
+		VGA_G <= "1111111111";
+		VGA_B <= "1111111111";
+	elsif countclk'event and countclk = '1' then
+		if Personagem = '1' then
+		VGA_R <= "0000000000";
+		VGA_G <= "1111111111";
+		VGA_B <= "0000000000";
+--		elsif Campo = '1' then
+--			if(fcolor="01") then
+--				VGA_R <= "0000000000";
+--				VGA_G <= "1111111111";
+--				VGA_B <= "0000000000";
+--			elsif(fcolor="11") then
+--				VGA_R <= "0000000000";
+--				VGA_G <= "0000000000";
+--				VGA_B <= "0111111111";
+--			else
+--				VGA_R <= "0000000000";
+--				VGA_G <= "0000000000";
+--				VGA_B <= "0000000000";		
+--			end if;
+--		elsif inimigos='1' then
+--			VGA_R <= "1111111111";
+--			VGA_G <= "1111111111";
+--			VGA_B <= "1111111111";
+--		elsif (Tiro_Visivel = '1' and Tiro01='1') then
+--			VGA_R <= "1111111111";
+--			VGA_G <= "1111111111";
+--			VGA_B <= "1111111111";
+		elsif (barra1_out = '1') then
+			VGA_R <= "1111111111";
+			VGA_G <= "1111111111";
+			VGA_B <= "1111111111";
+		elsif (barra2_out = '1') then
+			VGA_R <= "1111111111";
+			VGA_G <= "1111111111";
+			VGA_B <= "1111111111";
+		elsif (bola_out = '1') then
+			VGA_R <= "1111111111";
+			VGA_G <= "1111111111";
+			VGA_B <= "1111111111";
+		else
+			VGA_R <= "0000000000";
+			VGA_G <= "0000000000";
+			VGA_B <= "0000000000";
+		end if;
+	end if;
+end process VideoOut;
+
+VGA_CLK <= countclk;
+VGA_HS <= not vga_hsync;
+VGA_VS <= vga_vsync;
+VGA_SYNC <= '0';
+VGA_BLANK <= not (vga_hsync or vga_vsync);
+
+ascii_new <= temp_ps2_code_new;
+ascii_code <= temp_ps2_code;
+
+end rtl;
