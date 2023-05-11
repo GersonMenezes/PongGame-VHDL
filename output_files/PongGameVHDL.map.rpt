@@ -1,5 +1,5 @@
 Analysis & Synthesis report for PongGameVHDL
-Tue May 09 21:41:59 2023
+Wed May 10 16:57:12 2023
 Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
 
 
@@ -25,11 +25,12 @@ Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edit
  17. Parameter Settings for User Entity Instance: ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_clk
  18. Parameter Settings for User Entity Instance: ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_data
  19. altpll Parameter Settings by Entity Instance
- 20. Port Connectivity Checks: "formElements:barra_2"
- 21. Port Connectivity Checks: "formElements:barra_1"
- 22. Port Connectivity Checks: "Divisor_frequencia:CLKM_MAKING"
- 23. Elapsed Time Per Partition
- 24. Analysis & Synthesis Messages
+ 20. Port Connectivity Checks: "formDetails:bordas"
+ 21. Port Connectivity Checks: "formElements:barra_2"
+ 22. Port Connectivity Checks: "formElements:barra_1"
+ 23. Port Connectivity Checks: "Divisor_frequencia:CLKM_MAKING"
+ 24. Elapsed Time Per Partition
+ 25. Analysis & Synthesis Messages
 
 
 
@@ -55,16 +56,16 @@ applicable agreement for further details.
 +--------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                         ;
 +------------------------------------+-------------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Tue May 09 21:41:59 2023           ;
+; Analysis & Synthesis Status        ; Successful - Wed May 10 16:57:12 2023           ;
 ; Quartus II 64-Bit Version          ; 13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition ;
 ; Revision Name                      ; PongGameVHDL                                    ;
 ; Top-level Entity Name              ; PongGameVHDL                                    ;
 ; Family                             ; Cyclone II                                      ;
-; Total logic elements               ; 1,492                                           ;
-;     Total combinational functions  ; 1,438                                           ;
-;     Dedicated logic registers      ; 281                                             ;
-; Total registers                    ; 281                                             ;
-; Total pins                         ; 48                                              ;
+; Total logic elements               ; 1,590                                           ;
+;     Total combinational functions  ; 1,537                                           ;
+;     Dedicated logic registers      ; 291                                             ;
+; Total registers                    ; 291                                             ;
+; Total pins                         ; 50                                              ;
 ; Total virtual pins                 ; 0                                               ;
 ; Total memory bits                  ; 0                                               ;
 ; Embedded Multiplier 9-bit elements ; 0                                               ;
@@ -182,6 +183,7 @@ Parallel compilation was disabled, but you have multiple processors available. E
 ; ps2_keyboard_to_ascii.vhd        ; yes             ; User VHDL File              ; C:/Users/Gerson Menezes/Documents/VHDL/PongGameVHDL/ps2_keyboard_to_ascii.vhd ;         ;
 ; tipos.vhd                        ; yes             ; User VHDL File              ; C:/Users/Gerson Menezes/Documents/VHDL/PongGameVHDL/tipos.vhd                 ;         ;
 ; componentes_pkg.vhd              ; yes             ; User VHDL File              ; C:/Users/Gerson Menezes/Documents/VHDL/PongGameVHDL/componentes_pkg.vhd       ;         ;
+; formDetails.vhd                  ; yes             ; User VHDL File              ; C:/Users/Gerson Menezes/Documents/VHDL/PongGameVHDL/formDetails.vhd           ;         ;
 ; altpll.tdf                       ; yes             ; Megafunction                ; c:/altera/13.0sp1/quartus/libraries/megafunctions/altpll.tdf                  ;         ;
 ; aglobal130.inc                   ; yes             ; Megafunction                ; c:/altera/13.0sp1/quartus/libraries/megafunctions/aglobal130.inc              ;         ;
 ; stratix_pll.inc                  ; yes             ; Megafunction                ; c:/altera/13.0sp1/quartus/libraries/megafunctions/stratix_pll.inc             ;         ;
@@ -195,31 +197,31 @@ Parallel compilation was disabled, but you have multiple processors available. E
 +---------------------------------------------+-------+
 ; Resource                                    ; Usage ;
 +---------------------------------------------+-------+
-; Estimated Total logic elements              ; 1,492 ;
+; Estimated Total logic elements              ; 1,590 ;
 ;                                             ;       ;
-; Total combinational functions               ; 1438  ;
+; Total combinational functions               ; 1537  ;
 ; Logic element usage by number of LUT inputs ;       ;
-;     -- 4 input functions                    ; 755   ;
-;     -- 3 input functions                    ; 310   ;
-;     -- <=2 input functions                  ; 373   ;
+;     -- 4 input functions                    ; 828   ;
+;     -- 3 input functions                    ; 323   ;
+;     -- <=2 input functions                  ; 386   ;
 ;                                             ;       ;
 ; Logic elements by mode                      ;       ;
-;     -- normal mode                          ; 1043  ;
-;     -- arithmetic mode                      ; 395   ;
+;     -- normal mode                          ; 1128  ;
+;     -- arithmetic mode                      ; 409   ;
 ;                                             ;       ;
-; Total registers                             ; 281   ;
-;     -- Dedicated logic registers            ; 281   ;
+; Total registers                             ; 291   ;
+;     -- Dedicated logic registers            ; 291   ;
 ;     -- I/O registers                        ; 0     ;
 ;                                             ;       ;
-; I/O pins                                    ; 48    ;
+; I/O pins                                    ; 50    ;
 ; Embedded Multiplier 9-bit elements          ; 0     ;
 ; Total PLLs                                  ; 1     ;
 ;     -- PLLs                                 ; 1     ;
 ;                                             ;       ;
 ; Maximum fan-out node                        ; reset ;
-; Maximum fan-out                             ; 166   ;
-; Total fan-out                               ; 5615  ;
-; Average fan-out                             ; 3.18  ;
+; Maximum fan-out                             ; 177   ;
+; Total fan-out                               ; 6012  ;
+; Average fan-out                             ; 3.20  ;
 +---------------------------------------------+-------+
 
 
@@ -228,14 +230,15 @@ Parallel compilation was disabled, but you have multiple processors available. E
 +---------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+----------------------------------------------------------------------------------------------------+--------------+
 ; Compilation Hierarchy Node            ; LC Combinationals ; LC Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                ; Library Name ;
 +---------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+----------------------------------------------------------------------------------------------------+--------------+
-; |PongGameVHDL                         ; 1438 (610)        ; 281 (161)    ; 0           ; 0            ; 0       ; 0         ; 48   ; 0            ; |PongGameVHDL                                                                                      ; work         ;
-;    |Divisor_frequencia:CLKM_MAKING|   ; 44 (44)           ; 28 (28)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|Divisor_frequencia:CLKM_MAKING                                                       ; work         ;
+; |PongGameVHDL                         ; 1537 (629)        ; 291 (169)    ; 0           ; 0            ; 0       ; 0         ; 50   ; 0            ; |PongGameVHDL                                                                                      ; work         ;
+;    |Divisor_frequencia:CLKM_MAKING|   ; 45 (45)           ; 28 (28)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|Divisor_frequencia:CLKM_MAKING                                                       ; work         ;
 ;    |altclk:CLKM_M|                    ; 0 (0)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|altclk:CLKM_M                                                                        ; work         ;
 ;       |altpll:altpll_component|       ; 0 (0)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|altclk:CLKM_M|altpll:altpll_component                                                ; work         ;
+;    |formDetails:bordas|               ; 72 (72)           ; 2 (2)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|formDetails:bordas                                                                   ; work         ;
 ;    |formElements:barra_1|             ; 26 (26)           ; 2 (2)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|formElements:barra_1                                                                 ; work         ;
-;    |formElements:barra_2|             ; 27 (27)           ; 2 (2)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|formElements:barra_2                                                                 ; work         ;
+;    |formElements:barra_2|             ; 26 (26)           ; 2 (2)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|formElements:barra_2                                                                 ; work         ;
 ;    |formElements:bola|                ; 46 (46)           ; 2 (2)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|formElements:bola                                                                    ; work         ;
-;    |ps2_keyboard_to_ascii:teclado|    ; 685 (622)         ; 86 (28)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|ps2_keyboard_to_ascii:teclado                                                        ; work         ;
+;    |ps2_keyboard_to_ascii:teclado|    ; 693 (630)         ; 86 (28)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|ps2_keyboard_to_ascii:teclado                                                        ; work         ;
 ;       |ps2_keyboard:ps2_keyboard_0|   ; 63 (21)           ; 58 (34)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0                            ; work         ;
 ;          |debounce:debounce_ps2_clk|  ; 21 (21)           ; 12 (12)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_clk  ; work         ;
 ;          |debounce:debounce_ps2_data| ; 21 (21)           ; 12 (12)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_data ; work         ;
@@ -265,16 +268,19 @@ Encoding Type:  One-Hot
 +-----------------+--------------+-----------------+----------------+-------------+
 
 
-+--------------------------------------------------------------------+
-; Registers Removed During Synthesis                                 ;
-+---------------------------------------+----------------------------+
-; Register name                         ; Reason for Removal         ;
-+---------------------------------------+----------------------------+
-; barra2_VSTART[1]                      ; Merged with barra2_VEND[1] ;
-; bola_VEND[0]                          ; Merged with bola_VSTART[0] ;
-; barra1_VSTART[1]                      ; Merged with barra1_VEND[1] ;
-; Total Number of Removed Registers = 3 ;                            ;
-+---------------------------------------+----------------------------+
++----------------------------------------------------------------------+
+; Registers Removed During Synthesis                                   ;
++---------------------------------------+------------------------------+
+; Register name                         ; Reason for Removal           ;
++---------------------------------------+------------------------------+
+; barra1_VEND[0]                        ; Merged with barra1_VSTART[0] ;
+; barra2_VEND[0]                        ; Merged with barra2_VSTART[0] ;
+; bola_HEND[0]                          ; Merged with bola_HSTART[0]   ;
+; bola_VEND[0]                          ; Merged with bola_VSTART[0]   ;
+; barra1_VEND[1]                        ; Merged with barra1_VSTART[1] ;
+; barra2_VEND[1]                        ; Merged with barra2_VSTART[1] ;
+; Total Number of Removed Registers = 6 ;                              ;
++---------------------------------------+------------------------------+
 
 
 +------------------------------------------------------+
@@ -282,12 +288,12 @@ Encoding Type:  One-Hot
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 281   ;
+; Total registers                              ; 291   ;
 ; Number of registers using Synchronous Clear  ; 56    ;
 ; Number of registers using Synchronous Load   ; 0     ;
-; Number of registers using Asynchronous Clear ; 141   ;
+; Number of registers using Asynchronous Clear ; 155   ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 149   ;
+; Number of registers using Clock Enable       ; 156   ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
 
@@ -297,16 +303,6 @@ Encoding Type:  One-Hot
 +-------------------------------------------------+---------+
 ; Inverted Register                               ; Fan out ;
 +-------------------------------------------------+---------+
-; barra2_VSTART[8]                                ; 4       ;
-; barra2_VSTART[7]                                ; 4       ;
-; barra2_VSTART[6]                                ; 4       ;
-; barra2_VSTART[5]                                ; 4       ;
-; barra2_VSTART[4]                                ; 4       ;
-; barra2_VSTART[2]                                ; 4       ;
-; barra2_VEND[9]                                  ; 3       ;
-; barra2_VEND[6]                                  ; 3       ;
-; barra2_VEND[4]                                  ; 3       ;
-; barra2_VEND[3]                                  ; 3       ;
 ; barra1_VSTART[8]                                ; 4       ;
 ; barra1_VSTART[7]                                ; 4       ;
 ; barra1_VSTART[6]                                ; 4       ;
@@ -317,6 +313,16 @@ Encoding Type:  One-Hot
 ; barra1_VEND[6]                                  ; 3       ;
 ; barra1_VEND[4]                                  ; 3       ;
 ; barra1_VEND[3]                                  ; 3       ;
+; barra2_VSTART[8]                                ; 4       ;
+; barra2_VSTART[7]                                ; 4       ;
+; barra2_VSTART[6]                                ; 4       ;
+; barra2_VSTART[5]                                ; 4       ;
+; barra2_VSTART[4]                                ; 4       ;
+; barra2_VSTART[2]                                ; 4       ;
+; barra2_VEND[9]                                  ; 3       ;
+; barra2_VEND[6]                                  ; 3       ;
+; barra2_VEND[4]                                  ; 3       ;
+; barra2_VEND[3]                                  ; 3       ;
 ; vga_hsync                                       ; 4       ;
 ; vga_vsync                                       ; 4       ;
 ; VGA_R[0]~reg0                                   ; 1       ;
@@ -351,33 +357,44 @@ Encoding Type:  One-Hot
 ; VGA_B[9]~reg0                                   ; 1       ;
 ; ps2_keyboard_to_ascii:teclado|ascii[7]          ; 5       ;
 ; ps2_keyboard_to_ascii:teclado|prev_ps2_code_new ; 1       ;
-; ps2_keyboard_to_ascii:teclado|ascii[0]          ; 16      ;
+; ps2_keyboard_to_ascii:teclado|ascii[0]          ; 18      ;
 ; ps2_keyboard_to_ascii:teclado|ascii[1]          ; 17      ;
-; ps2_keyboard_to_ascii:teclado|ascii[2]          ; 13      ;
+; ps2_keyboard_to_ascii:teclado|ascii[2]          ; 14      ;
 ; ps2_keyboard_to_ascii:teclado|ascii[3]          ; 18      ;
 ; ps2_keyboard_to_ascii:teclado|ascii[4]          ; 14      ;
-; ps2_keyboard_to_ascii:teclado|ascii[5]          ; 20      ;
+; ps2_keyboard_to_ascii:teclado|ascii[5]          ; 18      ;
 ; ps2_keyboard_to_ascii:teclado|ascii[6]          ; 7       ;
-; bola_HSTART[0]                                  ; 6       ;
-; bola_HEND[3]                                    ; 4       ;
-; bola_HEND[1]                                    ; 8       ;
-; bola_HEND[0]                                    ; 5       ;
+; bola_HSTART[8]                                  ; 4       ;
+; bola_HSTART[7]                                  ; 4       ;
+; bola_HSTART[6]                                  ; 4       ;
+; bola_HSTART[5]                                  ; 5       ;
+; bola_HSTART[4]                                  ; 5       ;
+; bola_HSTART[2]                                  ; 5       ;
+; bola_HSTART[0]                                  ; 11      ;
+; bola_HEND[8]                                    ; 4       ;
+; bola_HEND[7]                                    ; 4       ;
+; bola_HEND[6]                                    ; 4       ;
+; bola_HEND[5]                                    ; 5       ;
+; bola_HEND[4]                                    ; 5       ;
+; bola_HEND[3]                                    ; 5       ;
+; bola_HEND[2]                                    ; 4       ;
+; bola_HEND[1]                                    ; 5       ;
 ; bola_VSTART[8]                                  ; 6       ;
 ; bola_VSTART[7]                                  ; 6       ;
-; bola_VSTART[6]                                  ; 9       ;
+; bola_VSTART[6]                                  ; 6       ;
 ; bola_VSTART[5]                                  ; 6       ;
 ; bola_VSTART[4]                                  ; 6       ;
-; bola_VSTART[2]                                  ; 7       ;
-; bola_VEND[8]                                    ; 6       ;
-; bola_VEND[7]                                    ; 6       ;
-; bola_VEND[6]                                    ; 6       ;
-; bola_VEND[5]                                    ; 6       ;
-; bola_VEND[4]                                    ; 6       ;
-; bola_VEND[3]                                    ; 6       ;
-; bola_VEND[2]                                    ; 6       ;
-; bola_VEND[1]                                    ; 7       ;
-; bola_direction[0]                               ; 50      ;
-; Total number of inverted registers = 80         ;         ;
+; bola_VSTART[2]                                  ; 6       ;
+; bola_VEND[8]                                    ; 5       ;
+; bola_VEND[7]                                    ; 5       ;
+; bola_VEND[6]                                    ; 5       ;
+; bola_VEND[5]                                    ; 5       ;
+; bola_VEND[4]                                    ; 5       ;
+; bola_VEND[3]                                    ; 5       ;
+; bola_VEND[2]                                    ; 5       ;
+; bola_VEND[1]                                    ; 6       ;
+; bola_direction[0]                               ; 48      ;
+; Total number of inverted registers = 91         ;         ;
 +-------------------------------------------------+---------+
 
 
@@ -386,20 +403,18 @@ Encoding Type:  One-Hot
 +--------------------+-----------+---------------+----------------------+------------------------+------------+-------------------------------------------------------------------------------------------------------------------+
 ; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                                                        ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+-------------------------------------------------------------------------------------------------------------------+
-; 3:1                ; 9 bits    ; 18 LEs        ; 0 LEs                ; 18 LEs                 ; Yes        ; |PongGameVHDL|barra2_VSTART[10]                                                                                   ;
-; 3:1                ; 9 bits    ; 18 LEs        ; 0 LEs                ; 18 LEs                 ; Yes        ; |PongGameVHDL|barra1_VSTART[10]                                                                                   ;
-; 3:1                ; 12 bits   ; 24 LEs        ; 12 LEs               ; 12 LEs                 ; Yes        ; |PongGameVHDL|ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|count_idle[8]                             ;
-; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |PongGameVHDL|ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_clk|counter_out[3]  ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |PongGameVHDL|barra2_VSTART[3]                                                                                    ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |PongGameVHDL|barra1_VEND[2]                                                                                      ;
+; 3:1                ; 12 bits   ; 24 LEs        ; 12 LEs               ; 12 LEs                 ; Yes        ; |PongGameVHDL|ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|count_idle[2]                             ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |PongGameVHDL|ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_clk|counter_out[4]  ;
 ; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |PongGameVHDL|ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_data|counter_out[4] ;
-; 24:1               ; 8 bits    ; 128 LEs       ; 32 LEs               ; 96 LEs                 ; Yes        ; |PongGameVHDL|bola_HSTART[1]                                                                                      ;
-; 24:1               ; 6 bits    ; 96 LEs        ; 18 LEs               ; 78 LEs                 ; Yes        ; |PongGameVHDL|bola_HEND[4]                                                                                        ;
-; 51:1               ; 4 bits    ; 136 LEs       ; 12 LEs               ; 124 LEs                ; Yes        ; |PongGameVHDL|bola_VSTART[3]                                                                                      ;
-; 49:1               ; 2 bits    ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |PongGameVHDL|bola_direction[3]                                                                                   ;
-; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |PongGameVHDL|barra2_VSTART[8]                                                                                    ;
-; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |PongGameVHDL|barra1_VSTART[2]                                                                                    ;
-; 24:1               ; 2 bits    ; 32 LEs        ; 8 LEs                ; 24 LEs                 ; Yes        ; |PongGameVHDL|bola_HSTART[9]                                                                                      ;
-; 24:1               ; 3 bits    ; 48 LEs        ; 12 LEs               ; 36 LEs                 ; Yes        ; |PongGameVHDL|bola_HEND[9]                                                                                        ;
-; 51:1               ; 16 bits   ; 544 LEs       ; 48 LEs               ; 496 LEs                ; Yes        ; |PongGameVHDL|bola_VEND[6]                                                                                        ;
+; 6:1                ; 7 bits    ; 28 LEs        ; 0 LEs                ; 28 LEs                 ; Yes        ; |PongGameVHDL|points_player1[3]                                                                                   ;
+; 26:1               ; 4 bits    ; 68 LEs        ; 16 LEs               ; 52 LEs                 ; Yes        ; |PongGameVHDL|bola_HEND[10]                                                                                       ;
+; 56:1               ; 4 bits    ; 148 LEs       ; 12 LEs               ; 136 LEs                ; Yes        ; |PongGameVHDL|bola_VSTART[10]                                                                                     ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |PongGameVHDL|barra2_VEND[9]                                                                                      ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |PongGameVHDL|barra1_VSTART[4]                                                                                    ;
+; 26:1               ; 16 bits   ; 272 LEs       ; 64 LEs               ; 208 LEs                ; Yes        ; |PongGameVHDL|bola_HEND[1]                                                                                        ;
+; 56:1               ; 16 bits   ; 592 LEs       ; 64 LEs               ; 528 LEs                ; Yes        ; |PongGameVHDL|bola_VEND[9]                                                                                        ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+-------------------------------------------------------------------------------------------------------------------+
 
 
@@ -836,23 +851,45 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-------------------------------+---------------------------------------+
 
 
++--------------------------------------------------+
+; Port Connectivity Checks: "formDetails:bordas"   ;
++----------------+-------+----------+--------------+
+; Port           ; Type  ; Severity ; Details      ;
++----------------+-------+----------+--------------+
+; lim_esq[7..6]  ; Input ; Info     ; Stuck at VCC ;
+; lim_esq[10..8] ; Input ; Info     ; Stuck at GND ;
+; lim_esq[5..4]  ; Input ; Info     ; Stuck at GND ;
+; lim_esq[2..0]  ; Input ; Info     ; Stuck at GND ;
+; lim_esq[3]     ; Input ; Info     ; Stuck at VCC ;
+; lim_dir[5..3]  ; Input ; Info     ; Stuck at VCC ;
+; lim_dir[9..6]  ; Input ; Info     ; Stuck at GND ;
+; lim_dir[2..0]  ; Input ; Info     ; Stuck at GND ;
+; lim_dir[10]    ; Input ; Info     ; Stuck at VCC ;
+; lim_sup[2..1]  ; Input ; Info     ; Stuck at VCC ;
+; lim_sup[10..8] ; Input ; Info     ; Stuck at GND ;
+; lim_sup[6..5]  ; Input ; Info     ; Stuck at GND ;
+; lim_sup[7]     ; Input ; Info     ; Stuck at VCC ;
+; lim_sup[4]     ; Input ; Info     ; Stuck at VCC ;
+; lim_sup[3]     ; Input ; Info     ; Stuck at GND ;
+; lim_sup[0]     ; Input ; Info     ; Stuck at GND ;
++----------------+-------+----------+--------------+
+
+
 +-----------------------------------------------------+
 ; Port Connectivity Checks: "formElements:barra_2"    ;
 +-------------------+-------+----------+--------------+
 ; Port              ; Type  ; Severity ; Details      ;
 +-------------------+-------+----------+--------------+
-; form_hstart[7..4] ; Input ; Info     ; Stuck at VCC ;
-; form_hstart[2..1] ; Input ; Info     ; Stuck at VCC ;
-; form_hstart[9..8] ; Input ; Info     ; Stuck at GND ;
+; form_hstart[3..1] ; Input ; Info     ; Stuck at VCC ;
+; form_hstart[9..6] ; Input ; Info     ; Stuck at GND ;
 ; form_hstart[10]   ; Input ; Info     ; Stuck at VCC ;
-; form_hstart[3]    ; Input ; Info     ; Stuck at GND ;
+; form_hstart[5]    ; Input ; Info     ; Stuck at VCC ;
+; form_hstart[4]    ; Input ; Info     ; Stuck at GND ;
 ; form_hstart[0]    ; Input ; Info     ; Stuck at GND ;
-; form_hend[7..0]   ; Input ; Info     ; Stuck at GND ;
+; form_hend[5..3]   ; Input ; Info     ; Stuck at VCC ;
+; form_hend[9..6]   ; Input ; Info     ; Stuck at GND ;
+; form_hend[2..0]   ; Input ; Info     ; Stuck at GND ;
 ; form_hend[10]     ; Input ; Info     ; Stuck at VCC ;
-; form_hend[9]      ; Input ; Info     ; Stuck at GND ;
-; form_hend[8]      ; Input ; Info     ; Stuck at VCC ;
-; form_vstart[0]    ; Input ; Info     ; Stuck at GND ;
-; form_vend[0]      ; Input ; Info     ; Stuck at GND ;
 +-------------------+-------+----------+--------------+
 
 
@@ -861,14 +898,18 @@ Note: In order to hide this table in the UI and the text report file, please set
 +--------------------+-------+----------+--------------+
 ; Port               ; Type  ; Severity ; Details      ;
 +--------------------+-------+----------+--------------+
-; form_hstart[10..1] ; Input ; Info     ; Stuck at GND ;
-; form_hstart[0]     ; Input ; Info     ; Stuck at VCC ;
-; form_hend[1..0]    ; Input ; Info     ; Stuck at VCC ;
-; form_hend[10..4]   ; Input ; Info     ; Stuck at GND ;
-; form_hend[3]       ; Input ; Info     ; Stuck at VCC ;
-; form_hend[2]       ; Input ; Info     ; Stuck at GND ;
-; form_vstart[0]     ; Input ; Info     ; Stuck at GND ;
-; form_vend[0]       ; Input ; Info     ; Stuck at GND ;
+; form_hstart[7..6]  ; Input ; Info     ; Stuck at VCC ;
+; form_hstart[10..8] ; Input ; Info     ; Stuck at GND ;
+; form_hstart[5..4]  ; Input ; Info     ; Stuck at GND ;
+; form_hstart[2..0]  ; Input ; Info     ; Stuck at GND ;
+; form_hstart[3]     ; Input ; Info     ; Stuck at VCC ;
+; form_hend[7..6]    ; Input ; Info     ; Stuck at VCC ;
+; form_hend[10..8]   ; Input ; Info     ; Stuck at GND ;
+; form_hend[3..2]    ; Input ; Info     ; Stuck at GND ;
+; form_hend[5]       ; Input ; Info     ; Stuck at GND ;
+; form_hend[4]       ; Input ; Info     ; Stuck at VCC ;
+; form_hend[1]       ; Input ; Info     ; Stuck at VCC ;
+; form_hend[0]       ; Input ; Info     ; Stuck at GND ;
 +--------------------+-------+----------+--------------+
 
 
@@ -896,7 +937,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus II 64-Bit Analysis & Synthesis
     Info: Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
-    Info: Processing started: Tue May 09 21:41:47 2023
+    Info: Processing started: Wed May 10 16:57:00 2023
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off PongGameVHDL -c PongGameVHDL
 Warning (20028): Parallel compilation is not licensed and has been disabled
 Info (12021): Found 2 design units, including 1 entities, in source file ponggamevhdl.vhd
@@ -924,68 +965,64 @@ Info (12021): Found 1 design units, including 0 entities, in source file tipos.v
     Info (12022): Found design unit 1: tipos
 Info (12021): Found 1 design units, including 0 entities, in source file componentes_pkg.vhd
     Info (12022): Found design unit 1: componentes_pkg
+Info (12021): Found 2 design units, including 1 entities, in source file formdetails.vhd
+    Info (12022): Found design unit 1: formDetails-arc
+    Info (12023): Found entity 1: formDetails
 Info (12127): Elaborating entity "PongGameVHDL" for the top level hierarchy
 Warning (10540): VHDL Signal Declaration warning at PongGameVHDL.vhd(56): used explicit default value for signal "veloci_bola" because signal was never assigned a value
-Warning (10036): Verilog HDL or VHDL warning at PongGameVHDL.vhd(84): object "movclk" assigned a value but never read
-Warning (10492): VHDL Process Statement warning at PongGameVHDL.vhd(159): signal "reset" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
-Warning (10631): VHDL Process Statement warning at PongGameVHDL.vhd(157): inferring latch(es) for signal or variable "barra1_HSTART", which holds its previous value in one or more paths through the process
-Warning (10631): VHDL Process Statement warning at PongGameVHDL.vhd(157): inferring latch(es) for signal or variable "barra1_HEND", which holds its previous value in one or more paths through the process
-Warning (10631): VHDL Process Statement warning at PongGameVHDL.vhd(157): inferring latch(es) for signal or variable "barra1_VSTART", which holds its previous value in one or more paths through the process
-Warning (10631): VHDL Process Statement warning at PongGameVHDL.vhd(157): inferring latch(es) for signal or variable "barra1_VEND", which holds its previous value in one or more paths through the process
-Warning (10492): VHDL Process Statement warning at PongGameVHDL.vhd(180): signal "reset" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
-Warning (10631): VHDL Process Statement warning at PongGameVHDL.vhd(178): inferring latch(es) for signal or variable "barra2_HSTART", which holds its previous value in one or more paths through the process
-Warning (10631): VHDL Process Statement warning at PongGameVHDL.vhd(178): inferring latch(es) for signal or variable "barra2_HEND", which holds its previous value in one or more paths through the process
-Warning (10631): VHDL Process Statement warning at PongGameVHDL.vhd(178): inferring latch(es) for signal or variable "barra2_VSTART", which holds its previous value in one or more paths through the process
-Warning (10631): VHDL Process Statement warning at PongGameVHDL.vhd(178): inferring latch(es) for signal or variable "barra2_VEND", which holds its previous value in one or more paths through the process
-Warning (10492): VHDL Process Statement warning at PongGameVHDL.vhd(201): signal "reset" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
-Info (10041): Inferred latch for "barra2_VEND[0]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_VSTART[0]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HEND[0]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HEND[1]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HEND[2]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HEND[3]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HEND[4]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HEND[5]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HEND[6]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HEND[7]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HEND[8]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HEND[9]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HEND[10]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HSTART[0]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HSTART[1]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HSTART[2]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HSTART[3]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HSTART[4]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HSTART[5]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HSTART[6]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HSTART[7]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HSTART[8]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HSTART[9]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra2_HSTART[10]" at PongGameVHDL.vhd(178)
-Info (10041): Inferred latch for "barra1_VEND[0]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_VSTART[0]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HEND[0]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HEND[1]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HEND[2]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HEND[3]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HEND[4]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HEND[5]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HEND[6]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HEND[7]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HEND[8]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HEND[9]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HEND[10]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HSTART[0]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HSTART[1]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HSTART[2]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HSTART[3]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HSTART[4]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HSTART[5]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HSTART[6]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HSTART[7]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HSTART[8]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HSTART[9]" at PongGameVHDL.vhd(157)
-Info (10041): Inferred latch for "barra1_HSTART[10]" at PongGameVHDL.vhd(157)
+Warning (10540): VHDL Signal Declaration warning at PongGameVHDL.vhd(57): used explicit default value for signal "veloci_barras" because signal was never assigned a value
+Warning (10036): Verilog HDL or VHDL warning at PongGameVHDL.vhd(91): object "movclk" assigned a value but never read
+Warning (10492): VHDL Process Statement warning at PongGameVHDL.vhd(167): signal "reset" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10631): VHDL Process Statement warning at PongGameVHDL.vhd(165): inferring latch(es) for signal or variable "barra1_HSTART", which holds its previous value in one or more paths through the process
+Warning (10631): VHDL Process Statement warning at PongGameVHDL.vhd(165): inferring latch(es) for signal or variable "barra1_HEND", which holds its previous value in one or more paths through the process
+Warning (10492): VHDL Process Statement warning at PongGameVHDL.vhd(188): signal "reset" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10631): VHDL Process Statement warning at PongGameVHDL.vhd(186): inferring latch(es) for signal or variable "barra2_HSTART", which holds its previous value in one or more paths through the process
+Warning (10631): VHDL Process Statement warning at PongGameVHDL.vhd(186): inferring latch(es) for signal or variable "barra2_HEND", which holds its previous value in one or more paths through the process
+Warning (10492): VHDL Process Statement warning at PongGameVHDL.vhd(209): signal "reset" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Info (10041): Inferred latch for "barra2_HEND[0]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HEND[1]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HEND[2]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HEND[3]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HEND[4]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HEND[5]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HEND[6]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HEND[7]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HEND[8]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HEND[9]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HEND[10]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HSTART[0]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HSTART[1]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HSTART[2]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HSTART[3]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HSTART[4]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HSTART[5]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HSTART[6]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HSTART[7]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HSTART[8]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HSTART[9]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra2_HSTART[10]" at PongGameVHDL.vhd(186)
+Info (10041): Inferred latch for "barra1_HEND[0]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HEND[1]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HEND[2]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HEND[3]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HEND[4]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HEND[5]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HEND[6]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HEND[7]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HEND[8]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HEND[9]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HEND[10]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HSTART[0]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HSTART[1]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HSTART[2]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HSTART[3]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HSTART[4]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HSTART[5]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HSTART[6]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HSTART[7]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HSTART[8]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HSTART[9]" at PongGameVHDL.vhd(165)
+Info (10041): Inferred latch for "barra1_HSTART[10]" at PongGameVHDL.vhd(165)
 Info (12128): Elaborating entity "Divisor_frequencia" for hierarchy "Divisor_frequencia:CLKM_MAKING"
 Warning (10540): VHDL Signal Declaration warning at Divisor_frequencia.vhd(15): used explicit default value for signal "TIMECONST2" because signal was never assigned a value
 Info (12128): Elaborating entity "altclk" for hierarchy "altclk:CLKM_M"
@@ -1047,17 +1084,25 @@ Info (12128): Elaborating entity "ps2_keyboard_to_ascii" for hierarchy "ps2_keyb
 Info (12128): Elaborating entity "ps2_keyboard" for hierarchy "ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0"
 Info (12128): Elaborating entity "debounce" for hierarchy "ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_clk"
 Info (12128): Elaborating entity "formElements" for hierarchy "formElements:barra_1"
+Info (12128): Elaborating entity "formDetails" for hierarchy "formDetails:bordas"
 Info (13000): Registers with preset signals will power-up high
 Info (13003): DEV_CLRn pin will set, and not reset, register with preset signal due to NOT Gate Push-Back
 Warning (13024): Output pins are stuck at VCC or GND
     Warning (13410): Pin "VGA_SYNC" is stuck at GND
 Critical Warning (18061): Ignored Power-Up Level option on the following registers
     Critical Warning (18010): Register bola_HSTART[9] will power up to Low
-    Critical Warning (18010): Register bola_HSTART[7] will power up to Low
+    Critical Warning (18010): Register bola_HSTART[8] will power up to High
+    Critical Warning (18010): Register bola_HSTART[6] will power up to High
+    Critical Warning (18010): Register bola_HSTART[5] will power up to High
+    Critical Warning (18010): Register bola_HSTART[4] will power up to High
+    Critical Warning (18010): Register bola_HSTART[2] will power up to High
     Critical Warning (18010): Register bola_HSTART[0] will power up to High
     Critical Warning (18010): Register bola_HEND[9] will power up to Low
-    Critical Warning (18010): Register bola_HEND[7] will power up to Low
-    Critical Warning (18010): Register bola_HEND[0] will power up to High
+    Critical Warning (18010): Register bola_HEND[8] will power up to High
+    Critical Warning (18010): Register bola_HEND[6] will power up to High
+    Critical Warning (18010): Register bola_HEND[5] will power up to High
+    Critical Warning (18010): Register bola_HEND[4] will power up to High
+    Critical Warning (18010): Register bola_HEND[2] will power up to High
     Critical Warning (18010): Register bola_VSTART[9] will power up to Low
     Critical Warning (18010): Register bola_VSTART[8] will power up to High
     Critical Warning (18010): Register bola_VSTART[7] will power up to High
@@ -1074,15 +1119,15 @@ Critical Warning (18061): Ignored Power-Up Level option on the following registe
     Critical Warning (18010): Register bola_VEND[2] will power up to High
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 1 node(s), including 0 DDIO, 1 PLL, 0 transceiver and 0 LCELL
-Info (21057): Implemented 1546 device resources after synthesis - the final resource count might be different
-    Info (21058): Implemented 5 input pins
+Info (21057): Implemented 1647 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 7 input pins
     Info (21059): Implemented 43 output pins
-    Info (21061): Implemented 1497 logic cells
+    Info (21061): Implemented 1596 logic cells
     Info (21065): Implemented 1 PLLs
-Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 38 warnings
-    Info: Peak virtual memory: 4655 megabytes
-    Info: Processing ended: Tue May 09 21:41:59 2023
+Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 42 warnings
+    Info: Peak virtual memory: 4648 megabytes
+    Info: Processing ended: Wed May 10 16:57:12 2023
     Info: Elapsed time: 00:00:12
-    Info: Total CPU time (on all processors): 00:00:12
+    Info: Total CPU time (on all processors): 00:00:11
 
 
