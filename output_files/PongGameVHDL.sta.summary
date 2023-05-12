@@ -3,35 +3,35 @@ TimeQuest Timing Analyzer Summary
 ------------------------------------------------------------
 
 Type  : Slow Model Setup 'clk'
-Slack : -8.108
-TNS   : -192.060
+Slack : -8.098
+TNS   : -179.294
 
 Type  : Slow Model Setup 'Divisor_frequencia:CLKM_MAKING|clk_inimigo_temp'
-Slack : -6.173
-TNS   : -461.073
+Slack : -6.029
+TNS   : -494.670
 
 Type  : Slow Model Setup 'CLKM_M|altpll_component|pll|clk[0]'
-Slack : -5.632
-TNS   : -27.047
+Slack : -5.709
+TNS   : -33.133
 
 Type  : Slow Model Setup 'ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_clk|result'
-Slack : -0.091
-TNS   : -0.480
+Slack : -0.002
+TNS   : -0.002
 
 Type  : Slow Model Hold 'clk'
-Slack : -2.541
-TNS   : -28.137
+Slack : -2.526
+TNS   : -25.770
 
 Type  : Slow Model Hold 'CLKM_M|altpll_component|pll|clk[0]'
-Slack : -0.106
-TNS   : -0.106
+Slack : -0.104
+TNS   : -0.104
 
 Type  : Slow Model Hold 'Divisor_frequencia:CLKM_MAKING|clk_inimigo_temp'
 Slack : 0.391
 TNS   : 0.000
 
 Type  : Slow Model Hold 'ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_clk|result'
-Slack : 0.668
+Slack : 0.536
 TNS   : 0.000
 
 Type  : Slow Model Minimum Pulse Width 'clk'
@@ -40,7 +40,7 @@ TNS   : -76.380
 
 Type  : Slow Model Minimum Pulse Width 'Divisor_frequencia:CLKM_MAKING|clk_inimigo_temp'
 Slack : -0.500
-TNS   : -93.000
+TNS   : -106.000
 
 Type  : Slow Model Minimum Pulse Width 'ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_clk|result'
 Slack : -0.500
@@ -55,27 +55,27 @@ Slack : 18.518
 TNS   : 0.000
 
 Type  : Fast Model Setup 'CLKM_M|altpll_component|pll|clk[0]'
-Slack : -2.960
-TNS   : -14.581
+Slack : -3.045
+TNS   : -17.843
 
 Type  : Fast Model Setup 'clk'
-Slack : -2.954
-TNS   : -53.383
+Slack : -2.933
+TNS   : -47.458
 
 Type  : Fast Model Setup 'Divisor_frequencia:CLKM_MAKING|clk_inimigo_temp'
-Slack : -2.249
-TNS   : -162.536
+Slack : -2.194
+TNS   : -168.666
 
 Type  : Fast Model Setup 'ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_clk|result'
-Slack : 0.135
+Slack : 0.182
 TNS   : 0.000
 
 Type  : Fast Model Hold 'clk'
-Slack : -1.582
-TNS   : -17.962
+Slack : -1.569
+TNS   : -16.845
 
 Type  : Fast Model Hold 'CLKM_M|altpll_component|pll|clk[0]'
-Slack : 0.061
+Slack : 0.062
 TNS   : 0.000
 
 Type  : Fast Model Hold 'Divisor_frequencia:CLKM_MAKING|clk_inimigo_temp'
@@ -83,7 +83,7 @@ Slack : 0.215
 TNS   : 0.000
 
 Type  : Fast Model Hold 'ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_clk|result'
-Slack : 0.330
+Slack : 0.247
 TNS   : 0.000
 
 Type  : Fast Model Minimum Pulse Width 'clk'
@@ -92,7 +92,7 @@ TNS   : -76.380
 
 Type  : Fast Model Minimum Pulse Width 'Divisor_frequencia:CLKM_MAKING|clk_inimigo_temp'
 Slack : -0.500
-TNS   : -93.000
+TNS   : -106.000
 
 Type  : Fast Model Minimum Pulse Width 'ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_clk|result'
 Slack : -0.500

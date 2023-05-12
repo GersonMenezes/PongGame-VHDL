@@ -1,12 +1,12 @@
-Analysis & Synthesis Status : Successful - Wed May 10 16:57:12 2023
+Analysis & Synthesis Status : Successful - Thu May 11 15:20:36 2023
 Quartus II 64-Bit Version : 13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition
 Revision Name : PongGameVHDL
 Top-level Entity Name : PongGameVHDL
 Family : Cyclone II
-Total logic elements : 1,590
-    Total combinational functions : 1,537
-    Dedicated logic registers : 291
-Total registers : 291
+Total logic elements : 1,732
+    Total combinational functions : 1,679
+    Dedicated logic registers : 305
+Total registers : 305
 Total pins : 50
 Total virtual pins : 0
 Total memory bits : 0
