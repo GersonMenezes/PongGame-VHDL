@@ -1,12 +1,25 @@
--- Tempo
--- Maquina de estados
--- Processos e componentes
+----------------------------------------------------------------------------------------------------------------
+-- Pong VHDL
+-- Autor: Gerson Leite de Menezes
+-- Professor: Rafael Iankowski Soares
+-- Esse jogo faz parte de um trabalho final da disciplina de Sistemas Digitais Avançados e visa consolidar
+-- através do jogo conhecimentos e técnicas de sistemas digitais aprendido ao longo do semestre letivo. 
+-- Para mais detalhes leia o README.md. Para futuras atualizações e mais detalhes entrar no link do 
+-- github: https://github.com/GersonMenezes/PongGame-VHDL onde o jogo e o README será atualizado. 
+-- Contato: gldmenezes@inf.ufpel.edu.br.
+--
+-- O trabalho implementa o jogo do PONG. O Pong é um jogo eletrônico clássico de arcade, lançado em 1972 pela Atari.
+-- É um jogo de simulação de tênis de mesa, no qual os jogadores movem as paletas para acertar uma bola de volta e 
+-- tentam marcar pontos no campo do oponente. O jogo tornou-se um sucesso instantâneo e ajudou a impulsionar o 
+-- desenvolvimento de jogos eletrônicos.
+-- Esse jogo foi escrito em VHDL e executado no DE2 Board da Altera. 
+-- Foi conectado ao dispositivo um monitor através de um cabo VGA e um teclado com conexão PS2.
+-----------------------------------------------------------------------------------------------------------------
 
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.std_logic_arith.all;
 use IEEE.std_logic_unsigned.all;
-use work.tipos.all;
 use work.componentes_pkg.all;
 
 entity PongGameVHDL is
@@ -14,7 +27,7 @@ port (
 	reset : in std_logic;
 	clk: in std_logic; -- 135 MHz
 	clk_27: in std_logic;
-	key0, key1 : in std_logic; -- Player 2 control, 0 to up, 1 to down
+	key0, key1, key2, key3 : in std_logic; -- Pushbutton from DE2 altera FPGA, They are to Player 2 control, 0 to up, 1 to down. More details in README
 	VGA_CLK, -- Dot clock to DAC
 	VGA_HS, -- Active-Low Horizontal Sync
 	VGA_VS, -- Active-Low Vertical Sync
@@ -29,6 +42,7 @@ port (
 end PongGameVHDL;
 
 architecture rtl of PongGameVHDL is
+
 type ArrayInteger1280 is array (39 downto 0) of integer range 1 to 1280;
 type ArrayInteger1024 is array (39 downto 0) of integer range 1 to 1024;
 
@@ -55,7 +69,7 @@ constant VMIDDLE 			: integer := 512;  	-- Meio da tela na Vertical
 -----------------------------------------
 ----- Parametros Gerais do Jogo ---------
 -----------------------------------------
-	signal points_player1, points_player2 	: integer range 0 to 80 := 0;
+	signal points_player1, points_player2 	: integer range 0 to 9 := 0;
 	signal game_level : integer range 1 to 4 := 1; 
 	signal veloci_bola   : integer range 1 to 15 := 5; 
 	signal veloci_barras : integer range 1 to 15 := 5; 
@@ -82,7 +96,7 @@ constant VMIDDLE 			: integer := 512;  	-- Meio da tela na Vertical
 	signal barra1_HSTART 	: integer range 1 to 1280 := 1;
 	signal barra1_HEND 		: integer range 1 to 1280 := 11;
 	signal barra1_VSTART	   : integer range 1 to 1024 := 500;
-	signal barra1_VEND		: integer range 1 to 1024 := 600;
+	signal barra1_VEND		: integer range 1 to 1024 := 650;
 	signal barra1_out			: std_LOGIC := '0'; -- Se '1', posição coincide com pixel da vez na tela e dá imagem
 ------------------------
 -- Parametros do barra2 --
@@ -90,7 +104,7 @@ constant VMIDDLE 			: integer := 512;  	-- Meio da tela na Vertical
 	signal barra2_HSTART 	: integer range 1 to 1280 := 1270;
 	signal barra2_HEND 		: integer range 1 to 1280 := 1280;
 	signal barra2_VSTART	   : integer range 1 to 1024 := 500;
-	signal barra2_VEND		: integer range 1 to 1024 := 600;
+	signal barra2_VEND		: integer range 1 to 1024 := 650;
 	signal barra2_out			: std_LOGIC := '0';
 			
 -- clock de movimento(quadrado e retangulo), aumenta a cada ponto.
@@ -123,7 +137,7 @@ bola: formElements port map(countclk, reset, HPixel, VPixel, bola_hstart, bola_h
 
 bordas: formDetails port map(countclk, reset, HPixel, VPixel, lim_esq_pong, lim_dir_pong, lim_sup_pong, points_player1, points_player2, bordas_out);
 
-HCounter: process (countclk, reset) -- Qual pix será modificado na tela?
+HCounter: process (countclk, reset) -- Qual pix será modificado na tela
 begin
 	if reset = '1' then
 		Hcount <= 0;
@@ -174,14 +188,14 @@ begin
 		barra1_HSTART <= lim_esq_pong;
 		barra1_HEND <= lim_esq_pong + 10;
 		barra1_VSTART <= 500;
-		barra1_VEND <= 600;
+		barra1_VEND <= 650;
 	else
 		if (clk_pong'event and clk_pong='1') then
 			-- MOVIMENTA a barra 1
-			if((temp_ps2_code_new = '1' and temp_ps2_code= "1100001") and (barra1_VEND < VEND)) then -- s (down)
+			if((temp_ps2_code_new = '1' and temp_ps2_code= "1100001") and (barra1_VEND < VEND)) then -- a (down)
 				barra1_VEND <= barra1_VEND + veloci_barras;
   				barra1_VSTART <= barra1_VSTART + veloci_barras;
-			elsif((temp_ps2_code_new = '1' and temp_ps2_code= "1100100") and (barra1_VSTART > lim_sup_pong)) then -- w (up)
+			elsif((temp_ps2_code_new = '1' and temp_ps2_code= "1100100") and (barra1_VSTART > lim_sup_pong)) then -- d (up)
 				barra1_VEND <= barra1_VEND - veloci_barras;
   				barra1_VSTART <= barra1_VSTART - veloci_barras;
 			end if;
@@ -195,14 +209,14 @@ begin
 		barra2_HSTART <= lim_dir_pong - 10;
 		barra2_HEND <= lim_dir_pong;
 		barra2_VSTART <= 500;
-		barra2_VEND <= 600;
+		barra2_VEND <= 650;
 	else
 		if (clk_pong'event and clk_pong='1') then
 			--Movimenta a barra 2
-			if(((temp_ps2_code_new = '1' and temp_ps2_code= "1101100") or key1 = '0') and (barra2_VEND < VEND)) then -- l (down)
+			if((key2  = '0' or key3 = '0') and (barra2_VEND < VEND)) then -- key2 or key3 (down) (Pushbutton)
 				barra2_VEND <= barra2_VEND + veloci_barras;
   				barra2_VSTART <= barra2_VSTART + veloci_barras;
-			elsif(((temp_ps2_code_new = '1' and temp_ps2_code= "1101111") or key0 = '0') and (barra2_VSTART > lim_sup_pong)) then -- o (up)
+			elsif((key0 = '0' or key1 = '0') and (barra2_VSTART > lim_sup_pong)) then -- key0 or key1 (up) (Pushbutton)
 				barra2_VEND <= barra2_VEND - veloci_barras;
   				barra2_VSTART <= barra2_VSTART - veloci_barras;
 			end if;
@@ -241,314 +255,325 @@ begin
 		game_level <= 1;
 	else
 		if (clk_pong'event and clk_pong='1') then
-		
-			if(toques_cont = 5) then
-				game_level <= game_level + 1;
-				toques_cont <= 0;
+			
+			if(toques_cont = 5) then -- Aumenta nível de dificuladade
+				if(game_level != 4) then
+					game_level <= game_level + 1;
+					toques_cont <= 0;
+			end if;
+			
+			if(points_player1 = 10) then -- Jogador venceu
+				points_player1 <= 0;
+				game_level <= 1;
+			elsif(points_player2 = 10) then
+				points_player2 <= 0;
+				game_level <= 1;
 			end if;
 			----------------------------------------------------------
 			--- Bola indo para à direita, direções 1, 2, 3, 9 e 10 ---
 			----------------------------------------------------------
 			
 			------------- Direção 1 --------------
-			if (bola_direction = 1) then -- Direção de 0° ou 360°
-				bola_HSTART <= bola_HSTART + veloci_bola;
-				bola_HEND <= bola_HEND + veloci_bola;
-				if((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 descendo)
-					and (bola_VSTART <= barra2_VEND)) and ((temp_ps2_code_new = '1' and temp_ps2_code= "1101100") or key1 = '0')) then
-					bola_direction <= 7;
-					toques_cont <= toques_cont + 1;
-				elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 subindo)
-					and (bola_VSTART <= barra2_VEND)) and ((temp_ps2_code_new = '1' and temp_ps2_code= "1101111") or key0 = '0')) then
-					bola_direction <= 5;
-					toques_cont <= toques_cont + 1;
-				elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 parada)
-					and (bola_VSTART <= barra2_VEND))) then
-					--bola_direction <= 5;
-					bola_direction <= 6;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HEND >= lim_dir_pong) then -- Jogador 1 fez ponto
-					bola_direction <= 1;
-					points_player1 <= points_player1 + 1; 
-					bola_HSTART <= HMIDDLE-10;
-					bola_HEND <= HMIDDLE;
-					bola_VSTART <= VMIDDLE;
-					bola_VEND <= VMIDDLE+10;
-					toques_cont <= 0;
-				end if;
+			case bola_direction is
+				when 1 => -- Direção de 0° ou 360°
+					bola_HSTART <= bola_HSTART + veloci_bola;
+					bola_HEND <= bola_HEND + veloci_bola;
+					if((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 descendo)
+						and (bola_VSTART <= barra2_VEND)) and (key2 = '0' or key3 = '0')) then
+						bola_direction <= 7;
+						toques_cont <= toques_cont + 1;
+					elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 subindo)
+						and (bola_VSTART <= barra2_VEND)) and (key0 = '0' or key1 = '0')) then
+						bola_direction <= 5;
+						toques_cont <= toques_cont + 1;
+					elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 parada)
+						and (bola_VSTART <= barra2_VEND))) then
+						--bola_direction <= 5;
+						bola_direction <= 6;
+						toques_cont <= toques_cont + 1;
+					elsif(bola_HEND >= lim_dir_pong) then -- Jogador 1 fez ponto
+						bola_direction <= 1;
+						points_player1 <= points_player1 + 1; 
+						bola_HSTART <= HMIDDLE-10;
+						bola_HEND <= HMIDDLE;
+						bola_VSTART <= VMIDDLE;
+						bola_VEND <= VMIDDLE+10;
+						toques_cont <= 0;
+					end if;
 			
 			------------ Direção 2 --------------
-			elsif (bola_direction = 2) then -- Direção de 30°
-				bola_HSTART <= bola_HSTART + veloci_bola + 1;
-				bola_HEND <= bola_HEND + veloci_bola + 1;
-				bola_VSTART <= bola_VSTART - veloci_bola;
-				bola_VEND <= bola_VEND - veloci_bola;
-				if((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 descendo)
-					and (bola_VSTART <= barra2_VEND)) and ((temp_ps2_code_new = '1' and temp_ps2_code= "1101100") or key1 = '0')) then
-					bola_direction <= 6;
-					toques_cont <= toques_cont + 1;
-				elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 subindo)
-					and (bola_VSTART <= barra2_VEND)) and ((temp_ps2_code_new = '1' and temp_ps2_code= "1101111") or key0 = '0')) then
-					bola_direction <= 4;
-					toques_cont <= toques_cont + 1;
-				elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 parada)
-					and (bola_VSTART <= barra2_VEND))) then
-					bola_direction <= 5;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HEND >= lim_dir_pong) then -- Jogador 1 fez ponto
-					bola_direction <= 1;
-					points_player1 <= points_player1 + 1; 
-					bola_HSTART <= HMIDDLE-10;
-					bola_HEND <= HMIDDLE;
-					bola_VSTART <= VMIDDLE;
-					bola_VEND <= VMIDDLE+10;
-					toques_cont <= 0;
-				elsif(bola_VSTART <= lim_sup_pong) then -- Bola tocou em cima
-					bola_direction <= 10;
-				end if;
+				when 2 => -- Direção de 30°
+					bola_HSTART <= bola_HSTART + veloci_bola + 1;
+					bola_HEND <= bola_HEND + veloci_bola  + 1;
+					bola_VSTART <= bola_VSTART - veloci_bola;
+					bola_VEND <= bola_VEND - veloci_bola;
+					if((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 descendo)
+						and (bola_VSTART <= barra2_VEND)) and (key2 = '0' or key3 = '0')) then
+						bola_direction <= 6;
+						toques_cont <= toques_cont + 1;
+					elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 subindo)
+						and (bola_VSTART <= barra2_VEND)) and (key0 = '0' or key1 = '0')) then
+						bola_direction <= 4;
+						toques_cont <= toques_cont + 1;
+					elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 parada)
+						and (bola_VSTART <= barra2_VEND))) then
+						bola_direction <= 5;
+						toques_cont <= toques_cont + 1;
+					elsif(bola_HEND >= lim_dir_pong) then -- Jogador 1 fez ponto
+						bola_direction <= 1;
+						points_player1 <= points_player1 + 1; 
+						bola_HSTART <= HMIDDLE-10;
+						bola_HEND <= HMIDDLE;
+						bola_VSTART <= VMIDDLE;
+						bola_VEND <= VMIDDLE+10;
+						toques_cont <= 0;
+					elsif(bola_VSTART <= lim_sup_pong) then -- Bola tocou em cima
+						bola_direction <= 10;
+					end if;
 				
 				------------ Direção 3 --------------
-			elsif (bola_direction = 3) then -- Direção de 60°
-				bola_HSTART <= bola_HSTART + veloci_bola;
-				bola_HEND <= bola_HEND + veloci_bola;
-				bola_VSTART <= bola_VSTART - veloci_bola - 1;
-				bola_VEND <= bola_VEND - veloci_bola - 1;
-				if((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 descendo)
-					and (bola_VSTART <= barra2_VEND)) and ((temp_ps2_code_new = '1' and temp_ps2_code= "1101100") or key1 = '0')) then
-					bola_direction <= 5;
-					toques_cont <= toques_cont + 1;
-				elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 subindo)
-					and (bola_VSTART <= barra2_VEND)) and ((temp_ps2_code_new = '1' and temp_ps2_code= "1101111") or key0 = '0')) then
-					bola_direction <= 4;
-					toques_cont <= toques_cont + 1;
-				elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 parada)
-					and (bola_VSTART <= barra2_VEND))) then
-					bola_direction <= 4;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HEND >= lim_dir_pong) then -- Jogador 1 fez ponto
-					bola_direction <= 1;
-					points_player1 <= points_player1 + 1; 
-					bola_HSTART <= HMIDDLE-10;
-					bola_HEND <= HMIDDLE;
-					bola_VSTART <= VMIDDLE;
-					bola_VEND <= VMIDDLE+10;
-					toques_cont <= 0;
-				elsif(bola_VSTART <= lim_sup_pong) then -- Bola tocou em cima
-					bola_direction <= 9;
-				end if;
-				
+					when 3 => -- Direção de 60°
+						bola_HSTART <= bola_HSTART + veloci_bola;
+						bola_HEND <= bola_HEND + veloci_bola;
+						bola_VSTART <= bola_VSTART - veloci_bola - 1;
+						bola_VEND <= bola_VEND - veloci_bola - 1;
+						if((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 descendo)
+							and (bola_VSTART <= barra2_VEND)) and (key2 = '0' or key3 = '0')) then
+							bola_direction <= 5;
+							toques_cont <= toques_cont + 1;
+						elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 subindo)
+							and (bola_VSTART <= barra2_VEND)) and (key0 = '0' or key1 = '0')) then
+							bola_direction <= 4;
+							toques_cont <= toques_cont + 1;
+						elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 parada)
+							and (bola_VSTART <= barra2_VEND))) then
+							bola_direction <= 4;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HEND >= lim_dir_pong) then -- Jogador 1 fez ponto
+							bola_direction <= 1;
+							points_player1 <= points_player1 + 1; 
+							bola_HSTART <= HMIDDLE-10;
+							bola_HEND <= HMIDDLE;
+							bola_VSTART <= VMIDDLE;
+							bola_VEND <= VMIDDLE+10;
+							toques_cont <= 0;
+						elsif(bola_VSTART <= lim_sup_pong) then -- Bola tocou em cima
+							bola_direction <= 9;
+						end if;
+					
 			------------ Direção 9 --------------
-			elsif (bola_direction = 9) then -- Direção de 300°
-				bola_HSTART <= bola_HSTART + veloci_bola;
-				bola_HEND <= bola_HEND + veloci_bola;
-				bola_VSTART <= bola_VSTART + veloci_bola + 1;
-				bola_VEND <= bola_VEND + veloci_bola + 1;
-				if((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 descendo)
-					and (bola_VSTART <= barra2_VEND)) and ((temp_ps2_code_new = '1' and temp_ps2_code= "1101100") or key1 = '0')) then
-					bola_direction <= 8;
-					toques_cont <= toques_cont + 1;
-				elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 subindo)
-					and (bola_VSTART <= barra2_VEND)) and ((temp_ps2_code_new = '1' and temp_ps2_code= "1101111") or key0 = '0')) then
-					bola_direction <= 7;
-					toques_cont <= toques_cont + 1;
-				elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 parada)
-					and (bola_VSTART <= barra2_VEND))) then
-					bola_direction <= 8;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HEND >= lim_dir_pong) then -- Jogador 1 fez ponto
-					bola_direction <= 1;
-					points_player1 <= points_player1 + 1; 
-					bola_HSTART <= HMIDDLE-10;
-					bola_HEND <= HMIDDLE;
-					bola_VSTART <= VMIDDLE;
-					bola_VEND <= VMIDDLE+10;
-					toques_cont <= 0;
-				elsif(bola_VEND >= VEND) then -- Bola tocou em baixo
-					bola_direction <= 3;
-				end if;
+					when 9 => -- Direção de 300°
+						bola_HSTART <= bola_HSTART + veloci_bola;
+						bola_HEND <= bola_HEND + veloci_bola;
+						bola_VSTART <= bola_VSTART + veloci_bola + 1;
+						bola_VEND <= bola_VEND + veloci_bola + 1;
+						if((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 descendo)
+							and (bola_VSTART <= barra2_VEND)) and (key2 = '0' or key3 = '0')) then
+							bola_direction <= 8;
+							toques_cont <= toques_cont + 1;
+						elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 subindo)
+							and (bola_VSTART <= barra2_VEND)) and (key0 = '0' or key1 = '0')) then
+							bola_direction <= 7;
+							toques_cont <= toques_cont + 1;
+						elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- l (Barra 2 parada)
+							and (bola_VSTART <= barra2_VEND))) then
+							bola_direction <= 8;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HEND >= lim_dir_pong) then -- Jogador 1 fez ponto
+							bola_direction <= 1;
+							points_player1 <= points_player1 + 1; 
+							bola_HSTART <= HMIDDLE-10;
+							bola_HEND <= HMIDDLE;
+							bola_VSTART <= VMIDDLE;
+							bola_VEND <= VMIDDLE+10;
+							toques_cont <= 0;
+						elsif(bola_VEND >= VEND) then -- Bola tocou em baixo
+							bola_direction <= 3;
+						end if;
 			
 			------------ Direção 10 --------------
-			elsif (bola_direction = 10) then -- Direção de 330°
-				bola_HSTART <= bola_HSTART + veloci_bola + 1;
-				bola_HEND <= bola_HEND + veloci_bola + 1;
-				bola_VSTART <= bola_VSTART + veloci_bola;
-				bola_VEND <= bola_VEND + veloci_bola;
-				if((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- (Barra 2 descendo)
-					and (bola_VSTART <= barra2_VEND)) and ((temp_ps2_code_new = '1' and temp_ps2_code= "1101100") or key1 = '0')) then
-					bola_direction <= 8;
-					toques_cont <= toques_cont + 1;
-				elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- (Barra 2 subindo)
-					and (bola_VSTART <= barra2_VEND)) and ((temp_ps2_code_new = '1' and temp_ps2_code= "1101111") or key0 = '0')) then
-					bola_direction <= 6;
-					toques_cont <= toques_cont + 1;
-				elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- (Barra 2 parada)
-					and (bola_VSTART <= barra2_VEND))) then
-					bola_direction <= 7;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HEND >= lim_dir_pong) then -- Jogador 1 fez ponto
-					bola_direction <= 1;
-					points_player1 <= points_player1 + 1; 
-					bola_HSTART <= HMIDDLE-10;
-					bola_HEND <= HMIDDLE;
-					bola_VSTART <= VMIDDLE;
-					bola_VEND <= VMIDDLE+10;
-					toques_cont <= 0;
-				elsif(bola_VEND >= VEND) then -- Bola tocou em baixo
-					bola_direction <= 2;
-				end if;
-				
+					when 10 => -- Direção de 330°
+						bola_HSTART <= bola_HSTART + veloci_bola + 1;
+						bola_HEND <= bola_HEND + veloci_bola + 1;
+						bola_VSTART <= bola_VSTART + veloci_bola;
+						bola_VEND <= bola_VEND + veloci_bola;
+						if((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- (Barra 2 descendo)
+							and (bola_VSTART <= barra2_VEND)) and (key2 = '0' or key3 = '0')) then
+							bola_direction <= 8;
+							toques_cont <= toques_cont + 1;
+						elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- (Barra 2 subindo)
+							and (bola_VSTART <= barra2_VEND)) and (key0 = '0' or key1 = '0')) then
+							bola_direction <= 6;
+							toques_cont <= toques_cont + 1;
+						elsif((bola_HEND >= barra2_HSTART) and ((bola_VEND >= barra2_VSTART) -- (Barra 2 parada)
+							and (bola_VSTART <= barra2_VEND))) then
+							bola_direction <= 7;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HEND >= lim_dir_pong) then -- Jogador 1 fez ponto
+							bola_direction <= 1;
+							points_player1 <= points_player1 + 1; 
+							bola_HSTART <= HMIDDLE-10;
+							bola_HEND <= HMIDDLE;
+							bola_VSTART <= VMIDDLE;
+							bola_VEND <= VMIDDLE+10;
+							toques_cont <= 0;
+						elsif(bola_VEND >= VEND) then -- Bola tocou em baixo
+							bola_direction <= 2;
+						end if;
+						
 			----------------------------------------------------------
 			---- Bola indo para esquerda, direções 4, 5, 6, 7 e 8 ----
 			----------------------------------------------------------
 			
 			------------- Direção 4, 120° --------------
-			elsif (bola_direction = 4) then
-				bola_HSTART <= bola_HSTART - veloci_bola;
-				bola_HEND <= bola_HEND - veloci_bola;
-				bola_VSTART <= bola_VSTART - veloci_bola - 1;
-				bola_VEND <= bola_VEND - veloci_bola -1;
-				if(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 descendo
-					and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100001")) then 
-					bola_direction <= 2;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 subindo
-					and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100100")) then 
-					bola_direction <= 3;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- Barra 1 parada
-					and (bola_VSTART <= barra1_VEND))) then 
-					bola_direction <= 3;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HSTART <= lim_esq_pong) then -- Jogador 2 fez ponto
-					bola_direction <= 6;
-					points_player2 <= points_player2 + 1; 
-					bola_HSTART <= HMIDDLE;
-					bola_HEND <= HMIDDLE+10;
-					bola_VSTART <= VMIDDLE;
-					bola_VEND <= VMIDDLE+10;
-					toques_cont <= 0;
-				elsif(bola_VSTART <= lim_sup_pong) then -- Tocou no limite superior
-					bola_direction <= 8;
-				end if;
+					when 4 =>
+						bola_HSTART <= bola_HSTART - veloci_bola;
+						bola_HEND <= bola_HEND - veloci_bola;
+						bola_VSTART <= bola_VSTART - veloci_bola - 1;
+						bola_VEND <= bola_VEND - veloci_bola -1;
+						if(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 descendo
+							and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100001")) then 
+							bola_direction <= 2;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 subindo
+							and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100100")) then 
+							bola_direction <= 3;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- Barra 1 parada
+							and (bola_VSTART <= barra1_VEND))) then 
+							bola_direction <= 3;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HSTART <= lim_esq_pong) then -- Jogador 2 fez ponto
+							bola_direction <= 6;
+							points_player2 <= points_player2 + 1; 
+							bola_HSTART <= HMIDDLE;
+							bola_HEND <= HMIDDLE+10;
+							bola_VSTART <= VMIDDLE;
+							bola_VEND <= VMIDDLE+10;
+							toques_cont <= 0;
+						elsif(bola_VSTART <= lim_sup_pong) then -- Tocou no limite superior
+							bola_direction <= 8;
+						end if;
 				
 			------------- Direção 5, 120° --------------
-			elsif (bola_direction = 5) then
-				bola_HSTART <= bola_HSTART - veloci_bola - 1;
-				bola_HEND <= bola_HEND - veloci_bola - 1;
-				bola_VSTART <= bola_VSTART - veloci_bola;
-				bola_VEND <= bola_VEND - veloci_bola;
-				if(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 descendo
-					and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100001")) then 
-					bola_direction <= 1;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 subindo
-					and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' 
-					and (temp_ps2_code= "1100100"))) then 
-					bola_direction <= 3;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- Barra 1 parada
-					and (bola_VSTART <= barra1_VEND))) then 
-					bola_direction <= 2;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HSTART <= lim_esq_pong) then -- Jogador 2 fez ponto
-					bola_direction <= 6;
-					points_player2 <= points_player2 + 1; 
-					bola_HSTART <= HMIDDLE;
-					bola_HEND <= HMIDDLE+10;
-					bola_VSTART <= VMIDDLE;
-					bola_VEND <= VMIDDLE+10;
-					toques_cont <= 0;
-				elsif(bola_VSTART <= lim_sup_pong) then -- Tocou no limite superior
-					bola_direction <= 7;
-				end if;
+					when 5 =>
+						bola_HSTART <= bola_HSTART - veloci_bola - 1;
+						bola_HEND <= bola_HEND - veloci_bola - 1;
+						bola_VSTART <= bola_VSTART - veloci_bola;
+						bola_VEND <= bola_VEND - veloci_bola;
+						if(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 descendo
+							and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100001")) then 
+							bola_direction <= 1;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 subindo
+							and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' 
+							and (temp_ps2_code= "1100100"))) then 
+							bola_direction <= 3;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- Barra 1 parada
+							and (bola_VSTART <= barra1_VEND))) then 
+							bola_direction <= 2;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HSTART <= lim_esq_pong) then -- Jogador 2 fez ponto
+							bola_direction <= 6;
+							points_player2 <= points_player2 + 1; 
+							bola_HSTART <= HMIDDLE;
+							bola_HEND <= HMIDDLE+10;
+							bola_VSTART <= VMIDDLE;
+							bola_VEND <= VMIDDLE+10;
+							toques_cont <= 0;
+						elsif(bola_VSTART <= lim_sup_pong) then -- Tocou no limite superior
+							bola_direction <= 7;
+						end if;
 				
 			------------- Direção 6, 180° --------------
-			elsif (bola_direction = 6) then
-				bola_HSTART <= bola_HSTART - veloci_bola ;
-				bola_HEND <= bola_HEND - veloci_bola;
-				if(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 descendo
-					and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100001")) then 
-					bola_direction <= 10;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 subindo
-					and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100100")) then 
-					bola_direction <= 2;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- Barra 1 parada
-					and (bola_VSTART <= barra1_VEND))) then 
-					-- bola_direction <= 2;
-					bola_direction <= 1;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HSTART <= lim_esq_pong) then -- Jogador 2 fez ponto
-					bola_direction <= 6;
-					points_player2 <= points_player2 + 1; 
-					bola_HSTART <= HMIDDLE;
-					bola_HEND <= HMIDDLE+10;
-					bola_VSTART <= VMIDDLE;
-					bola_VEND <= VMIDDLE+10;
-					toques_cont <= 0;
-				end if;
+					when 6 =>
+						bola_HSTART <= bola_HSTART - veloci_bola ;
+						bola_HEND <= bola_HEND - veloci_bola;
+						if(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 descendo
+							and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100001")) then 
+							bola_direction <= 10;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 subindo
+							and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100100")) then 
+							bola_direction <= 2;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- Barra 1 parada
+							and (bola_VSTART <= barra1_VEND))) then 
+							-- bola_direction <= 2;
+							bola_direction <= 1;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HSTART <= lim_esq_pong) then -- Jogador 2 fez ponto
+							bola_direction <= 6;
+							points_player2 <= points_player2 + 1; 
+							bola_HSTART <= HMIDDLE;
+							bola_HEND <= HMIDDLE+10;
+							bola_VSTART <= VMIDDLE;
+							bola_VEND <= VMIDDLE+10;
+							toques_cont <= 0;
+						end if;
 				
 				------------- Direção 7, 210° --------------
-			elsif (bola_direction = 7) then
-				bola_HSTART <= bola_HSTART - veloci_bola - 1;
-				bola_HEND <= bola_HEND - veloci_bola - 1;
-				bola_VSTART <= bola_VSTART + veloci_bola;
-				bola_VEND <= bola_VEND + veloci_bola;
-				if(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 descendo
-					and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100001")) then 
-					bola_direction <= 9;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 subindo
-					and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100100")) then 
-					bola_direction <= 1;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- Barra 1 parada
-					and (bola_VSTART <= barra1_VEND))) then 
-					bola_direction <= 10;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HSTART <= lim_esq_pong) then -- Jogador 2 fez ponto
-					bola_direction <= 6;
-					points_player2 <= points_player2 + 1; 
-					bola_HSTART <= HMIDDLE;
-					bola_HEND <= HMIDDLE+10;
-					bola_VSTART <= VMIDDLE;
-					bola_VEND <= VMIDDLE+10;
-					toques_cont <= 0;
-				elsif(bola_VEND >= VEND) then -- Tocou no limite inferior
-					bola_direction <= 5;
-				end if;
+					when 7 =>
+						bola_HSTART <= bola_HSTART - veloci_bola - 1;
+						bola_HEND <= bola_HEND - veloci_bola - 1;
+						bola_VSTART <= bola_VSTART + veloci_bola;
+						bola_VEND <= bola_VEND + veloci_bola;
+						if(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 descendo
+							and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100001")) then 
+							bola_direction <= 9;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 subindo
+							and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100100")) then 
+							bola_direction <= 1;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- Barra 1 parada
+							and (bola_VSTART <= barra1_VEND))) then 
+							bola_direction <= 10;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HSTART <= lim_esq_pong) then -- Jogador 2 fez ponto
+							bola_direction <= 6;
+							points_player2 <= points_player2 + 1; 
+							bola_HSTART <= HMIDDLE;
+							bola_HEND <= HMIDDLE+10;
+							bola_VSTART <= VMIDDLE;
+							bola_VEND <= VMIDDLE+10;
+							toques_cont <= 0;
+						elsif(bola_VEND >= VEND) then -- Tocou no limite inferior
+							bola_direction <= 5;
+						end if;
 				
 			------------- Direção 8, 240° --------------
-			elsif (bola_direction = 8) then
-				bola_HSTART <= bola_HSTART - veloci_bola;
-				bola_HEND <= bola_HEND - veloci_bola;
-				bola_VSTART <= bola_VSTART + veloci_bola + 1;
-				bola_VEND <= bola_VEND + veloci_bola + 1;
-				if(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 descendo
-					and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100001")) then 
-					bola_direction <= 9;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 subindo
-					and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100100")) then 
-					bola_direction <= 10;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- Barra 1 parada
-					and (bola_VSTART <= barra1_VEND))) then 
-					bola_direction <= 9;
-					toques_cont <= toques_cont + 1;
-				elsif(bola_HSTART <= lim_esq_pong) then -- Jogador 2 fez ponto
-					bola_direction <= 6;
-					points_player2 <= points_player2 + 1; 
-					bola_HSTART <= HMIDDLE;
-					bola_HEND <= HMIDDLE+10;
-					bola_VSTART <= VMIDDLE;
-					bola_VEND <= VMIDDLE+10;
-					toques_cont <= 0;
-				elsif(bola_VEND >= VEND) then -- Tocou no limite inferior
-					bola_direction <= 4;
-				end if;
-			end if;
+					when 8 =>
+						bola_HSTART <= bola_HSTART - veloci_bola;
+						bola_HEND <= bola_HEND - veloci_bola;
+						bola_VSTART <= bola_VSTART + veloci_bola + 1;
+						bola_VEND <= bola_VEND + veloci_bola + 1;
+						if(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 descendo
+							and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100001")) then 
+							bola_direction <= 9;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- barra 1 subindo
+							and (bola_VSTART <= barra1_VEND)) and (temp_ps2_code_new = '1' and temp_ps2_code= "1100100")) then 
+							bola_direction <= 10;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HSTART <= barra1_HEND and ((bola_VEND >= barra1_VSTART) -- Barra 1 parada
+							and (bola_VSTART <= barra1_VEND))) then 
+							bola_direction <= 9;
+							toques_cont <= toques_cont + 1;
+						elsif(bola_HSTART <= lim_esq_pong) then -- Jogador 2 fez ponto
+							bola_direction <= 6;
+							points_player2 <= points_player2 + 1; 
+							bola_HSTART <= HMIDDLE;
+							bola_HEND <= HMIDDLE+10;
+							bola_VSTART <= VMIDDLE;
+							bola_VEND <= VMIDDLE+10;
+							toques_cont <= 0;
+						elsif(bola_VEND >= VEND) then -- Tocou no limite inferior
+							bola_direction <= 4;
+						end if;
+					when others =>
+				end case;
 		end if;
 	end if;
 end process;
@@ -570,9 +595,23 @@ begin
 			VGA_G <= "1111111111";
 			VGA_B <= "1111111111";
 		elsif (bola_out = '1') then
-			VGA_R <= "1111111111";
-			VGA_G <= "1111111111";
-			VGA_B <= "1111111111";
+			if (game_level = 1) then
+				VGA_R <= "1111111111";
+				VGA_G <= "1111111111";
+				VGA_B <= "1111111111";
+			elsif (game_level = 2) then
+				VGA_R <= "1001010101";
+				VGA_G <= "1001001000";
+				VGA_B <= "0000010000";
+			elsif (game_level = 3) then
+				VGA_R <= "1111111111";
+				VGA_G <= "0101000000";
+				VGA_B <= "0000000000";
+			elsif (game_level = 4) then
+				VGA_R <= "1111111111";
+				VGA_G <= "0000000000";
+				VGA_B <= "0000000000";
+			end if;
 		elsif (bordas_out = '1') then
 			VGA_R <= "0000111111";
 			VGA_G <= "1111111000";

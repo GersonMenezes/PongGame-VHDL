@@ -19,7 +19,7 @@ package componentes_pkg is
 				clk,reset: in STD_LOGIC;
 				HPixel, VPixel: in integer range 0 to 1280;
 				lim_esq, lim_dir, lim_sup: in integer range 1 to 1280;
-				points_player1, points_player2 	: integer range 0 to 80;
+				points_player1, points_player2 	: integer range 0 to 9;
 				form: out STD_LOGIC
 				);
 		end component; 

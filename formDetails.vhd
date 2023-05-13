@@ -8,7 +8,7 @@ entity formDetails is
 		clk,reset: in STD_LOGIC;
 		HPixel, VPixel: in integer range 0 to 1280;
 		lim_esq, lim_dir, lim_sup: in integer range 1 to 1280;
-		points_player1, points_player2 	: integer range 0 to 80;
+		points_player1, points_player2 	: integer range 0 to 9;
 		form: out STD_LOGIC
 	);
 end formDetails; 
@@ -252,7 +252,21 @@ begin
 					and ((lim_sup_points <= VPixel) and (VPixel <= lim_inf_points))) then
 				form_c <= '1';
 			else
-				form_c <= '0';
+				if (((lim_dir_points1 - espessura_points) <= HPixel) and (HPixel <= lim_dir_points1) 
+						and ((lim_sup_points <= VPixel) and (VPixel <= lim_inf_points))) then
+					form_c <= '1';
+				elsif ((lim_esq_points1 <= HPixel) and (HPixel <= (lim_esq_points1 + espessura_points)) 
+							and ((lim_sup_points <= VPixel) and (VPixel <= lim_inf_points))) then
+						form_c <= '1';
+				elsif (((lim_esq_points1) <= HPixel) and (HPixel <= lim_dir_points1) 
+						and ((lim_sup_points <= VPixel) and (VPixel <= lim_sup_points + espessura_points))) then
+					form_c <= '1';
+				elsif (((lim_esq_points1) <= HPixel) and (HPixel <= lim_dir_points1) 
+						and (((lim_sup_points + (4*espessura_points)) <= VPixel) and (VPixel <= (lim_inf_points)))) then
+					form_c <= '1';
+				else
+					form_c <= '0';
+				end if;
 			end if;
 		end if;
 			
@@ -439,11 +453,20 @@ begin
 					
 		---------- Number indefinied Player 2  -----------
 		else 
-			if (((lim_esq_points2) <= HPixel) and (HPixel <= lim_dir_points2) 
+			if (((lim_dir_points1 - espessura_points) <= HPixel) and (HPixel <= lim_dir_points1) 
 					and ((lim_sup_points <= VPixel) and (VPixel <= lim_inf_points))) then
-				form_c2 <= '1';
+				form_c <= '1';
+			elsif ((lim_esq_points1 <= HPixel) and (HPixel <= (lim_esq_points1 + espessura_points)) 
+					and ((lim_sup_points <= VPixel) and (VPixel <= lim_inf_points))) then
+				form_c <= '1';
+			elsif (((lim_esq_points1) <= HPixel) and (HPixel <= lim_dir_points1) 
+					and ((lim_sup_points <= VPixel) and (VPixel <= lim_sup_points + espessura_points))) then
+				form_c <= '1';
+			elsif (((lim_esq_points1) <= HPixel) and (HPixel <= lim_dir_points1) 
+					and (((lim_sup_points + (4*espessura_points)) <= VPixel) and (VPixel <= (lim_inf_points)))) then
+				form_c <= '1';
 			else
-				form_c2 <= '0';
+				form_c <= '0';
 			end if;
 		end if;
 	end if;
@@ -484,10 +507,10 @@ begin
 			form_t <= '1';
 			
 					------- Letra N ---------
-		elsif (((2 - title_Hstart + (2*next_character)) <= HPixel) and ((HPixel) <=  (title_Hstart + (2*next_character) + (stroke_thickness))) 
+		elsif (((title_Hstart + (2*next_character)) <= HPixel) and ((HPixel) <=  (title_Hstart + (2*next_character) + (stroke_thickness))) 
 			and ( title_Vstart <= VPixel) and (VPixel <= title_Vend)) then
 			form_t <= '1';
-		elsif ((title_Hstart  + (2*next_character) <= HPixel) and (HPixel <= (title_Hstart + (2*next_character) + largura_letra)) 
+		elsif ((((title_Hstart  + (2*next_character)) - 4) <= HPixel) and (HPixel <= (title_Hstart + (2*next_character) + largura_letra)) 
 			and ( title_Vstart <= VPixel) and (VPixel <= (title_Vstart + stroke_thickness))) then
 			form_t <= '1';
 		elsif ((((title_Hstart + (2*next_character) +(largura_letra - stroke_thickness)) <= HPixel)) and (HPixel <=  title_Hstart + (2*next_character) + largura_letra) 
@@ -504,7 +527,7 @@ begin
 		elsif ((((title_Hstart + (3*next_character) +(largura_letra - stroke_thickness)) <= HPixel)) and (HPixel <=  title_Hstart + (3*next_character) + largura_letra) 
 			and ((title_Vmiddle <= VPixel) and (VPixel <= title_Vend))) then
 			form_t <= '1';
-		elsif ((title_Hstart - 30 + (3*next_character) <= HPixel) and (HPixel <= (title_Hstart  + (3*next_character) + largura_letra)) 
+		elsif ((title_Hstart + 30 + (3*next_character) <= HPixel) and (HPixel <= (title_Hstart  + (3*next_character) + largura_letra)) 
 			and (title_Vmiddle <= VPixel) and (VPixel <= (title_Vmiddle + stroke_thickness))) then
 			form_t <= '1';	
 		elsif ((title_Hstart  + (3*next_character) <= HPixel) and (HPixel <= (title_Hstart  + (3*next_character) + largura_letra)) 
