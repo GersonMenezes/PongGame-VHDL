@@ -36,7 +36,7 @@ constant title_Hstart		: integer := 50;
 constant title_Vstart		: integer := 25;
 constant space_size			: integer := 15;
 constant title_Vend		   : integer := title_Vstart + altura_letra;
-constant next_character			: integer := space_size + largura_letra;
+constant next_character		: integer := space_size + largura_letra;
 constant character_Hmiddle	: integer := ((2*title_Vstart) + altura_letra)/2;
 constant title_Vmiddle : integer := (((2*title_Hstart) + largura_letra)/2) - (stroke_thickness/2);
 
@@ -60,14 +60,14 @@ begin
 	end if;
 end process FormBordaGen;
 
--- Este processos forma os números de pontos
+-- Este processos forma os números de pontos de cada jogador
 formPointNumbers : process (clk, reset) 
 begin
 	if reset = '1' then
 		form_c <= '0';
 	elsif clk'event and clk = '1' then 
 		
-		---------- Number 0 -----------
+		---------- Number 0 Player 1 -----------
 		if (points_player1 = 0) then
 			if (((lim_dir_points1 - espessura_points) <= HPixel) and (HPixel <= lim_dir_points1) 
 						and ((lim_sup_points <= VPixel) and (VPixel <= lim_inf_points))) then
@@ -85,7 +85,7 @@ begin
 				form_c <= '0';
 			end if;
 			
-		---------- Number 1 -----------
+		---------- Number 1 Player 1 -----------
 		elsif (points_player1 = 1) then
 			if (((lim_dir_points1 - espessura_points) <= HPixel) and (HPixel <= lim_dir_points1) 
 					and ((lim_sup_points <= VPixel) and (VPixel <= lim_inf_points))) then
@@ -94,7 +94,7 @@ begin
 				form_c <= '0';
 			end if;
 		
-		---------- Number 2 -----------
+		---------- Number 2 Player 1 -----------
 		elsif (points_player1 = 2) then
 			if (((lim_esq_points1) <= HPixel) and (HPixel <= lim_dir_points1) 
 					and ((lim_sup_points <= VPixel) and (VPixel <= lim_sup_points + espessura_points))) then
@@ -116,7 +116,7 @@ begin
 				form_c <= '0';
 			end if;
 			
-		---------- Number 3 -----------
+		---------- Number 3 Player 1 -----------
 		elsif (points_player1 = 3) then
 			if (((lim_esq_points1) <= HPixel) and (HPixel <= lim_dir_points1) 
 						and ((lim_sup_points <= VPixel) and (VPixel <= lim_sup_points + espessura_points))) then
@@ -135,7 +135,7 @@ begin
 				form_c <= '0';
 			end if;
 		
-		---------- Number 4 -----------
+		---------- Number 4 Player 1 -----------
 		elsif (points_player1 = 4) then
 			if (((lim_dir_points1 - espessura_points) <= HPixel) and (HPixel <= lim_dir_points1) 
 					and ((lim_sup_points <= VPixel) and (VPixel <= lim_inf_points))) then
@@ -151,7 +151,7 @@ begin
 				form_c <= '0';
 			end if;
 			
-		---------- Number 5 -----------
+		---------- Number 5 Player 1 -----------
 		elsif (points_player1 = 5) then
 			if (((lim_esq_points1) <= HPixel) and (HPixel <= lim_dir_points1) 
 					and ((lim_sup_points <= VPixel) and (VPixel <= lim_sup_points + espessura_points))) then
@@ -173,7 +173,7 @@ begin
 				form_c <= '0';
 			end if;
 			
-		---------- Number 6 -----------
+		---------- Number 6 Player 1 -----------
 		elsif (points_player1 = 6) then
 			if (((lim_esq_points1) <= HPixel) and (HPixel <= lim_dir_points1) 
 						and ((lim_sup_points <= VPixel) and (VPixel <= lim_sup_points + espessura_points))) then
@@ -195,7 +195,7 @@ begin
 				form_c <= '0';
 			end if;
 			
-		---------- Number 7 -----------
+		---------- Number 7 Player 1 -----------
 		elsif (points_player1 = 7) then
 			if (((lim_dir_points1 - espessura_points) <= HPixel) and (HPixel <= lim_dir_points1) 
 					and ((lim_sup_points <= VPixel) and (VPixel <= lim_inf_points))) then
@@ -207,7 +207,7 @@ begin
 				form_c <= '0';
 			end if;
 		
-		---------- Number 8 -----------
+		---------- Number 8 Player 1 -----------
 		elsif (points_player1 = 8) then
 			if (((lim_dir_points1 - espessura_points) <= HPixel) and (HPixel <= lim_dir_points1) 
 						and ((lim_sup_points <= VPixel) and (VPixel <= lim_inf_points))) then
@@ -229,7 +229,7 @@ begin
 				form_c <= '0';
 			end if;
 			
-					---------- Number 9 -----------
+					---------- Number 9 Player 1 -----------
 		elsif (points_player1 = 9) then
 			if (((lim_dir_points1 - espessura_points) <= HPixel) and (HPixel <= lim_dir_points1) 
 					and ((lim_sup_points <= VPixel) and (VPixel <= lim_inf_points))) then
@@ -532,7 +532,65 @@ begin
 			form_t <= '1';	
 		elsif ((title_Hstart  + (3*next_character) <= HPixel) and (HPixel <= (title_Hstart  + (3*next_character) + largura_letra)) 
 			and ((title_Vend - stroke_thickness)  <= VPixel) and (VPixel <= (title_Vend))) then
+			form_t <= '1';	
+			
+										------- Letra U ---------
+		elsif (((title_Hstart + (5*next_character)) <= HPixel) and ((HPixel) <=  (title_Hstart + (5*next_character) + (stroke_thickness))) 
+			and ( title_Vstart <= VPixel) and (VPixel <= title_Vend)) then
 			form_t <= '1';
+		elsif ((title_Hstart  + (5*next_character) <= HPixel) and (HPixel <= (title_Hstart  + (5*next_character) + largura_letra)) 
+			and ((title_Vend - stroke_thickness)  <= VPixel) and (VPixel <= (title_Vend))) then
+			form_t <= '1';	
+		elsif ((((title_Hstart + (5*next_character) +(largura_letra - stroke_thickness)) <= HPixel)) and (HPixel <=  title_Hstart + (5*next_character) + largura_letra) 
+			and ((title_Vstart <= VPixel) and (VPixel <= title_Vend))) then
+			form_t <= '1';
+			
+										------- Letra F ---------
+		elsif (((title_Hstart + (6*next_character)) <= HPixel) and ((HPixel) <=  (title_Hstart + (6*next_character) + (stroke_thickness))) 
+			and ( title_Vstart <= VPixel) and (VPixel <= title_Vend)) then
+			form_t <= '1';
+		elsif ((title_Hstart  + (6*next_character) <= HPixel) and (HPixel <= (title_Hstart + (6*next_character) + largura_letra)) 
+			and ( title_Vstart <= VPixel) and (VPixel <= (title_Vstart + stroke_thickness))) then
+			form_t <= '1';
+		elsif ((title_Hstart  + (6*next_character) <= HPixel) and (HPixel <= (title_Hstart + (6*next_character) + largura_letra) - 10) 
+			and ( title_Vmiddle <= VPixel) and (VPixel <= (title_Vmiddle + stroke_thickness))) then
+			form_t <= '1';
+					
+										------- Letra P ---------
+		elsif (((title_Hstart + (7*next_character)) <= HPixel) and ((HPixel) <=  (title_Hstart + (7*next_character) + (stroke_thickness))) 
+			and ( title_Vstart <= VPixel) and (VPixel <= title_Vend)) then
+			form_t <= '1';
+		elsif ((title_Hstart  + (7*next_character) <= HPixel) and (HPixel <= (title_Hstart + (7*next_character) + largura_letra)) 
+			and ( title_Vstart <= VPixel) and (VPixel <= (title_Vstart + stroke_thickness))) then
+			form_t <= '1';
+		elsif ((title_Hstart  + (7*next_character) <= HPixel) and (HPixel <= (title_Hstart + (7*next_character) + largura_letra)) 
+			and ( title_Vmiddle <= VPixel) and (VPixel <= (title_Vmiddle + stroke_thickness))) then
+			form_t <= '1';
+		elsif ((((title_Hstart + (7*next_character) +(largura_letra - stroke_thickness)) <= HPixel)) and (HPixel <=  title_Hstart + (7*next_character) + largura_letra) 
+			and ((title_Vstart <= VPixel) and (VPixel <= title_Vmiddle))) then
+			form_t <= '1';
+			
+												------- Letra E ---------
+		elsif (((title_Hstart + (8*next_character)) <= HPixel) and ((HPixel) <=  (title_Hstart + (8*next_character) + (stroke_thickness))) 
+			and ( title_Vstart <= VPixel) and (VPixel <= title_Vend)) then
+			form_t <= '1';
+		elsif ((title_Hstart  + (8*next_character) <= HPixel) and (HPixel <= (title_Hstart + (8*next_character) + largura_letra)) 
+			and ( title_Vstart <= VPixel) and (VPixel <= (title_Vstart + stroke_thickness))) then
+			form_t <= '1';
+		elsif ((title_Hstart  + (8*next_character) <= HPixel) and (HPixel <= (title_Hstart + (8*next_character) + largura_letra)) 
+			and ( title_Vmiddle <= VPixel) and (VPixel <= (title_Vmiddle + stroke_thickness))) then
+			form_t <= '1';
+		elsif ((title_Hstart  + (8*next_character) <= HPixel) and (HPixel <= (title_Hstart  + (8*next_character) + largura_letra)) 
+			and ((title_Vend - stroke_thickness)  <= VPixel) and (VPixel <= (title_Vend))) then
+			form_t <= '1';	
+			
+											------- Letra L ---------
+		elsif (((title_Hstart + (9*next_character)) <= HPixel) and ((HPixel) <=  (title_Hstart + (9*next_character) + (stroke_thickness))) 
+			and ( title_Vstart <= VPixel) and (VPixel <= title_Vend)) then
+			form_t <= '1';
+		elsif ((title_Hstart  + (9*next_character) <= HPixel) and (HPixel <= (title_Hstart  + (9*next_character) + largura_letra)) 
+			and ((title_Vend - stroke_thickness)  <= VPixel) and (VPixel <= (title_Vend))) then
+			form_t <= '1';	
 			
 			
 		else

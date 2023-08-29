@@ -1,5 +1,5 @@
 Flow report for PongGameVHDL
-Tue Aug 29 13:42:22 2023
+Tue Aug 29 15:48:38 2023
 Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
 
 
@@ -40,15 +40,15 @@ applicable agreement for further details.
 +--------------------------------------------------------------------------------------+
 ; Flow Summary                                                                         ;
 +------------------------------------+-------------------------------------------------+
-; Flow Status                        ; Successful - Tue Aug 29 13:42:19 2023           ;
+; Flow Status                        ; Successful - Tue Aug 29 15:48:36 2023           ;
 ; Quartus II 64-Bit Version          ; 13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition ;
 ; Revision Name                      ; PongGameVHDL                                    ;
 ; Top-level Entity Name              ; PongGameVHDL                                    ;
 ; Family                             ; Cyclone II                                      ;
 ; Device                             ; EP2C35F672C6                                    ;
 ; Timing Models                      ; Final                                           ;
-; Total logic elements               ; 1,702 / 33,216 ( 5 % )                          ;
-;     Total combinational functions  ; 1,695 / 33,216 ( 5 % )                          ;
+; Total logic elements               ; 1,744 / 33,216 ( 5 % )                          ;
+;     Total combinational functions  ; 1,738 / 33,216 ( 5 % )                          ;
 ;     Dedicated logic registers      ; 281 / 33,216 ( < 1 % )                          ;
 ; Total registers                    ; 281                                             ;
 ; Total pins                         ; 52 / 475 ( 11 % )                               ;
@@ -64,7 +64,7 @@ applicable agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 08/29/2023 13:41:42 ;
+; Start date & time ; 08/29/2023 15:48:02 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; PongGameVHDL        ;
 +-------------------+---------------------+
@@ -75,7 +75,7 @@ applicable agreement for further details.
 +-------------------------------------+---------------------------------+---------------+-------------+------------+
 ; Assignment Name                     ; Value                           ; Default Value ; Entity Name ; Section Id ;
 +-------------------------------------+---------------------------------+---------------+-------------+------------+
-; COMPILER_SIGNATURE_ID               ; 153951944839461.169332730201124 ; --            ; --          ; --         ;
+; COMPILER_SIGNATURE_ID               ; 153951944839461.169333488207444 ; --            ; --          ; --         ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                              ; --            ; --          ; --         ;
 ; MIN_CORE_JUNCTION_TEMP              ; 0                               ; --            ; --          ; --         ;
 ; PARTITION_COLOR                     ; 16764057                        ; --            ; --          ; Top        ;
@@ -90,11 +90,11 @@ applicable agreement for further details.
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name               ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis      ; 00:00:14     ; 1.0                     ; 4651 MB             ; 00:00:12                           ;
-; Fitter                    ; 00:00:17     ; 1.0                     ; 4898 MB             ; 00:00:11                           ;
-; Assembler                 ; 00:00:03     ; 1.0                     ; 4559 MB             ; 00:00:02                           ;
-; TimeQuest Timing Analyzer ; 00:00:02     ; 1.0                     ; 4569 MB             ; 00:00:01                           ;
-; Total                     ; 00:00:36     ; --                      ; --                  ; 00:00:26                           ;
+; Analysis & Synthesis      ; 00:00:16     ; 1.0                     ; 4649 MB             ; 00:00:14                           ;
+; Fitter                    ; 00:00:13     ; 1.0                     ; 4890 MB             ; 00:00:12                           ;
+; Assembler                 ; 00:00:02     ; 1.0                     ; 4566 MB             ; 00:00:02                           ;
+; TimeQuest Timing Analyzer ; 00:00:01     ; 1.0                     ; 4563 MB             ; 00:00:01                           ;
+; Total                     ; 00:00:32     ; --                      ; --                  ; 00:00:29                           ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 

@@ -4,7 +4,7 @@ JedecChain;
 	DefaultMfr(6E);
 
 	P ActionCode(Cfg)
-		Device PartName(EP2C35F672) Path("C:/Users/Gerson Menezes/Documents/VHDL/PongGameVHDL/output_files/") File("PongGameVHDL.sof") MfrSpec(OpMask(1));
+		Device PartName(EP2C35F672) Path("C:/Users/Gerson Menezes/Documents/Engenharia de Computação/VHDL/PongGameVHDL/output_files/") File("PongGameVHDL.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 

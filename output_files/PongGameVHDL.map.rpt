@@ -1,5 +1,5 @@
 Analysis & Synthesis report for PongGameVHDL
-Tue Aug 29 13:41:57 2023
+Tue Aug 29 15:48:18 2023
 Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
 
 
@@ -57,13 +57,13 @@ applicable agreement for further details.
 +--------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                         ;
 +------------------------------------+-------------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Tue Aug 29 13:41:57 2023           ;
+; Analysis & Synthesis Status        ; Successful - Tue Aug 29 15:48:18 2023           ;
 ; Quartus II 64-Bit Version          ; 13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition ;
 ; Revision Name                      ; PongGameVHDL                                    ;
 ; Top-level Entity Name              ; PongGameVHDL                                    ;
 ; Family                             ; Cyclone II                                      ;
-; Total logic elements               ; 1,720                                           ;
-;     Total combinational functions  ; 1,695                                           ;
+; Total logic elements               ; 1,763                                           ;
+;     Total combinational functions  ; 1,738                                           ;
 ;     Dedicated logic registers      ; 281                                             ;
 ; Total registers                    ; 281                                             ;
 ; Total pins                         ; 52                                              ;
@@ -197,16 +197,16 @@ Parallel compilation was disabled, but you have multiple processors available. E
 +---------------------------------------------+-----------------------------------------------------------------------+
 ; Resource                                    ; Usage                                                                 ;
 +---------------------------------------------+-----------------------------------------------------------------------+
-; Estimated Total logic elements              ; 1,720                                                                 ;
+; Estimated Total logic elements              ; 1,763                                                                 ;
 ;                                             ;                                                                       ;
-; Total combinational functions               ; 1695                                                                  ;
+; Total combinational functions               ; 1738                                                                  ;
 ; Logic element usage by number of LUT inputs ;                                                                       ;
-;     -- 4 input functions                    ; 916                                                                   ;
-;     -- 3 input functions                    ; 421                                                                   ;
-;     -- <=2 input functions                  ; 358                                                                   ;
+;     -- 4 input functions                    ; 956                                                                   ;
+;     -- 3 input functions                    ; 419                                                                   ;
+;     -- <=2 input functions                  ; 363                                                                   ;
 ;                                             ;                                                                       ;
 ; Logic elements by mode                      ;                                                                       ;
-;     -- normal mode                          ; 1284                                                                  ;
+;     -- normal mode                          ; 1327                                                                  ;
 ;     -- arithmetic mode                      ; 411                                                                   ;
 ;                                             ;                                                                       ;
 ; Total registers                             ; 281                                                                   ;
@@ -219,9 +219,9 @@ Parallel compilation was disabled, but you have multiple processors available. E
 ;     -- PLLs                                 ; 1                                                                     ;
 ;                                             ;                                                                       ;
 ; Maximum fan-out node                        ; ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|ps2_code[0] ;
-; Maximum fan-out                             ; 170                                                                   ;
-; Total fan-out                               ; 6551                                                                  ;
-; Average fan-out                             ; 3.23                                                                  ;
+; Maximum fan-out                             ; 169                                                                   ;
+; Total fan-out                               ; 6715                                                                  ;
+; Average fan-out                             ; 3.24                                                                  ;
 +---------------------------------------------+-----------------------------------------------------------------------+
 
 
@@ -230,15 +230,15 @@ Parallel compilation was disabled, but you have multiple processors available. E
 +---------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+----------------------------------------------------------------------------------------------------+--------------+
 ; Compilation Hierarchy Node            ; LC Combinationals ; LC Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                ; Library Name ;
 +---------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+----------------------------------------------------------------------------------------------------+--------------+
-; |PongGameVHDL                         ; 1695 (682)        ; 281 (158)    ; 0           ; 0            ; 0       ; 0         ; 52   ; 0            ; |PongGameVHDL                                                                                      ; work         ;
+; |PongGameVHDL                         ; 1738 (681)        ; 281 (158)    ; 0           ; 0            ; 0       ; 0         ; 52   ; 0            ; |PongGameVHDL                                                                                      ; work         ;
 ;    |Divisor_frequencia:CLKM_MAKING|   ; 45 (45)           ; 28 (28)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|Divisor_frequencia:CLKM_MAKING                                                       ; work         ;
 ;    |altclk:CLKM_M|                    ; 0 (0)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|altclk:CLKM_M                                                                        ; work         ;
 ;       |altpll:altpll_component|       ; 0 (0)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|altclk:CLKM_M|altpll:altpll_component                                                ; work         ;
-;    |formDetails:bordas|               ; 192 (192)         ; 3 (3)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|formDetails:bordas                                                                   ; work         ;
-;    |formElements:barra_1|             ; 25 (25)           ; 2 (2)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|formElements:barra_1                                                                 ; work         ;
+;    |formDetails:bordas|               ; 234 (234)         ; 3 (3)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|formDetails:bordas                                                                   ; work         ;
+;    |formElements:barra_1|             ; 24 (24)           ; 2 (2)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|formElements:barra_1                                                                 ; work         ;
 ;    |formElements:barra_2|             ; 27 (27)           ; 2 (2)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|formElements:barra_2                                                                 ; work         ;
 ;    |formElements:bola|                ; 47 (47)           ; 2 (2)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|formElements:bola                                                                    ; work         ;
-;    |ps2_keyboard_to_ascii:teclado|    ; 677 (614)         ; 86 (28)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|ps2_keyboard_to_ascii:teclado                                                        ; work         ;
+;    |ps2_keyboard_to_ascii:teclado|    ; 680 (617)         ; 86 (28)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|ps2_keyboard_to_ascii:teclado                                                        ; work         ;
 ;       |ps2_keyboard:ps2_keyboard_0|   ; 63 (21)           ; 58 (34)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0                            ; work         ;
 ;          |debounce:debounce_ps2_clk|  ; 21 (21)           ; 12 (12)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_clk  ; work         ;
 ;          |debounce:debounce_ps2_data| ; 21 (21)           ; 12 (12)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |PongGameVHDL|ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_data ; work         ;
@@ -369,15 +369,15 @@ Note: All latches listed above may not be present at the end of synthesis due to
 ; VGA_G[6]~reg0                                   ; 1       ;
 ; VGA_G[8]~reg0                                   ; 1       ;
 ; VGA_B[4]~reg0                                   ; 1       ;
-; game_level[0]                                   ; 14      ;
+; game_level[0]                                   ; 13      ;
 ; ps2_keyboard_to_ascii:teclado|ascii[7]          ; 5       ;
 ; ps2_keyboard_to_ascii:teclado|prev_ps2_code_new ; 1       ;
-; ps2_keyboard_to_ascii:teclado|ascii[0]          ; 10      ;
+; ps2_keyboard_to_ascii:teclado|ascii[0]          ; 11      ;
 ; ps2_keyboard_to_ascii:teclado|ascii[1]          ; 16      ;
-; ps2_keyboard_to_ascii:teclado|ascii[2]          ; 15      ;
+; ps2_keyboard_to_ascii:teclado|ascii[2]          ; 17      ;
 ; ps2_keyboard_to_ascii:teclado|ascii[3]          ; 18      ;
 ; ps2_keyboard_to_ascii:teclado|ascii[4]          ; 14      ;
-; ps2_keyboard_to_ascii:teclado|ascii[5]          ; 20      ;
+; ps2_keyboard_to_ascii:teclado|ascii[5]          ; 19      ;
 ; ps2_keyboard_to_ascii:teclado|ascii[6]          ; 7       ;
 ; bola_HSTART[8]                                  ; 4       ;
 ; bola_HSTART[7]                                  ; 4       ;
@@ -947,7 +947,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:00:12     ;
+; Top            ; 00:00:14     ;
 +----------------+--------------+
 
 
@@ -957,7 +957,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus II 64-Bit Analysis & Synthesis
     Info: Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
-    Info: Processing started: Tue Aug 29 13:41:42 2023
+    Info: Processing started: Tue Aug 29 15:48:02 2023
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off PongGameVHDL -c PongGameVHDL
 Warning (20028): Parallel compilation is not licensed and has been disabled
 Info (12021): Found 2 design units, including 1 entities, in source file ponggamevhdl.vhd
@@ -1144,6 +1144,38 @@ Warning (10492): VHDL Process Statement warning at formDetails.vhd(530): signal 
 Warning (10492): VHDL Process Statement warning at formDetails.vhd(531): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
 Warning (10492): VHDL Process Statement warning at formDetails.vhd(533): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
 Warning (10492): VHDL Process Statement warning at formDetails.vhd(534): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(538): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(539): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(541): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(542): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(544): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(545): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(549): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(550): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(552): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(553): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(555): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(556): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(560): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(561): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(563): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(564): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(566): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(567): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(569): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(570): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(574): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(575): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(577): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(578): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(580): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(581): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(583): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(584): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(588): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(589): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(591): signal "HPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10492): VHDL Process Statement warning at formDetails.vhd(592): signal "VPixel" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
 Info (13000): Registers with preset signals will power-up high
 Info (13003): DEV_CLRn pin will set, and not reset, register with preset signal due to NOT Gate Push-Back
 Warning (13024): Output pins are stuck at VCC or GND
@@ -1178,15 +1210,15 @@ Critical Warning (18061): Ignored Power-Up Level option on the following registe
     Critical Warning (18010): Register bola_VEND[2] will power up to High
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 1 node(s), including 0 DDIO, 1 PLL, 0 transceiver and 0 LCELL
-Info (21057): Implemented 1777 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 1820 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 9 input pins
     Info (21059): Implemented 43 output pins
-    Info (21061): Implemented 1724 logic cells
+    Info (21061): Implemented 1767 logic cells
     Info (21065): Implemented 1 PLLs
-Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 74 warnings
-    Info: Peak virtual memory: 4651 megabytes
-    Info: Processing ended: Tue Aug 29 13:41:57 2023
-    Info: Elapsed time: 00:00:15
-    Info: Total CPU time (on all processors): 00:00:12
+Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 106 warnings
+    Info: Peak virtual memory: 4658 megabytes
+    Info: Processing ended: Tue Aug 29 15:48:18 2023
+    Info: Elapsed time: 00:00:16
+    Info: Total CPU time (on all processors): 00:00:15
 
 
