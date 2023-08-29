@@ -123,9 +123,9 @@ constant VMIDDLE 			: integer := 512;  	-- Meio da tela na Vertical
 	
 
 begin
-CLKM_MAKING: divisor_frequencia port map(countclk,movclk,clk_pong);
+CLKM_MAKING: divisor_frequencia port map(countclk, movclk, clk_pong);
 
-CLKM_M: altclk port map(clk_27,countclk);
+CLKM_M: altclk port map(clk_27, countclk);
 
 teclado : ps2_keyboard_to_ascii port map(clk,ps2_clk,ps2_data,temp_ps2_code_new,temp_ps2_code);
 
@@ -256,10 +256,11 @@ begin
 	else
 		if (clk_pong'event and clk_pong='1') then
 			
-			if(toques_cont = 5) then -- Aumenta nível de dificuladade
-				if(game_level != 4) then
+			if((toques_cont = 5)) then -- Aumenta nível de dificuladade
+				if(game_level /= 4) then
 					game_level <= game_level + 1;
 					toques_cont <= 0;
+				end if;
 			end if;
 			
 			if(points_player1 = 10) then -- Jogador venceu

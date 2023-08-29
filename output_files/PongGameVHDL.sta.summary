@@ -3,35 +3,35 @@ TimeQuest Timing Analyzer Summary
 ------------------------------------------------------------
 
 Type  : Slow Model Setup 'clk'
-Slack : -7.687
-TNS   : -177.614
+Slack : -8.474
+TNS   : -173.095
 
 Type  : Slow Model Setup 'Divisor_frequencia:CLKM_MAKING|clk_inimigo_temp'
-Slack : -5.744
-TNS   : -440.013
+Slack : -5.835
+TNS   : -427.870
 
 Type  : Slow Model Setup 'CLKM_M|altpll_component|pll|clk[0]'
-Slack : -5.369
-TNS   : -72.185
+Slack : -5.349
+TNS   : -72.633
 
 Type  : Slow Model Setup 'ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_clk|result'
-Slack : 0.085
-TNS   : 0.000
+Slack : -0.202
+TNS   : -0.490
 
 Type  : Slow Model Hold 'clk'
-Slack : -2.530
-TNS   : -22.414
+Slack : -2.532
+TNS   : -19.584
 
 Type  : Slow Model Hold 'CLKM_M|altpll_component|pll|clk[0]'
-Slack : -0.114
-TNS   : -0.114
+Slack : -0.106
+TNS   : -0.106
 
 Type  : Slow Model Hold 'Divisor_frequencia:CLKM_MAKING|clk_inimigo_temp'
 Slack : 0.391
 TNS   : 0.000
 
 Type  : Slow Model Hold 'ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_clk|result'
-Slack : 0.539
+Slack : 0.538
 TNS   : 0.000
 
 Type  : Slow Model Minimum Pulse Width 'clk'
@@ -54,28 +54,28 @@ Type  : Slow Model Minimum Pulse Width 'clk_27'
 Slack : 18.518
 TNS   : 0.000
 
-Type  : Fast Model Setup 'CLKM_M|altpll_component|pll|clk[0]'
-Slack : -2.938
-TNS   : -40.900
-
 Type  : Fast Model Setup 'clk'
-Slack : -2.727
-TNS   : -47.284
+Slack : -3.122
+TNS   : -44.487
+
+Type  : Fast Model Setup 'CLKM_M|altpll_component|pll|clk[0]'
+Slack : -2.877
+TNS   : -40.842
 
 Type  : Fast Model Setup 'Divisor_frequencia:CLKM_MAKING|clk_inimigo_temp'
-Slack : -2.000
-TNS   : -145.688
+Slack : -2.066
+TNS   : -139.732
 
 Type  : Fast Model Setup 'ps2_keyboard_to_ascii:teclado|ps2_keyboard:ps2_keyboard_0|debounce:debounce_ps2_clk|result'
-Slack : 0.311
+Slack : 0.043
 TNS   : 0.000
 
 Type  : Fast Model Hold 'clk'
 Slack : -1.574
-TNS   : -15.362
+TNS   : -14.066
 
 Type  : Fast Model Hold 'CLKM_M|altpll_component|pll|clk[0]'
-Slack : 0.054
+Slack : 0.061
 TNS   : 0.000
 
 Type  : Fast Model Hold 'Divisor_frequencia:CLKM_MAKING|clk_inimigo_temp'
